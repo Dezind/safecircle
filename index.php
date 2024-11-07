@@ -254,17 +254,17 @@
 
     <section class="section" id="concerts">
         <h3>DISCOVER EVENTS</h3>
-        <button onclick="alert('Search Concerts')" class="rounded-button">Find Concerts</button>
+        <button onclick="window.location.href='searchresult.php'" class="rounded-button">Find Events</button>
     </section>
 
     <section class="section" id="conventions">
         <h3>MEET FRIENDS</h3>
-        <button onclick="alert('Search Conventions')" class="rounded-button">Find Conventions</button>
+        <button onclick="alert('Search Conventions')" class="rounded-button">Find Friends</button>
     </section>
 
     <section class="section" id="events">
         <h3>MAKE MEMORIES</h3>
-        <button onclick="alert('Search Events')" class="rounded-button">Find Events</button>
+        <button onclick="alert('Search Events')" class="rounded-button">Join SafeCircle</button>
     </section>
 
     <section class="section" id="join">

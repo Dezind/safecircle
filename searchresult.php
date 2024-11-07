@@ -53,18 +53,27 @@
     <div class="search-bar">
         <!-------Category Dropdown-------->
         <select id="category">
-            <option>Select Category</option>
-            <option>Concert</option>
-            <option>Art</option>
-            <option>Gaming</option>
-            <option>Networking</option>
-            <option>Food</option>
-            <option>Photography</option>
-            <option>Film</option>
-            <option>Health & Wellness</option>
-            <option>Community Service</option>
-            <option>Dance</option>
-            <option>Cultural Events</option>
+            <option value="Music">Select Category</option>
+            <option value="Music">Music</option>
+            <option value="Sports">Sports</option>
+            <option value="Technology">Technology</option>
+            <option value="Art">Art</option>
+            <option value="Health & Wellness">Health & Wellness</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Food">Food</option>
+            <option value="Travel">Travel</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Photography">Photography</option>
+            <option value="Networking">Networking</option>
+            <option value="Community Service">Community Service</option>
+            <option value="Workshops">Workshops</option>
+            <option value="Startups">Startups</option>
+            <option value="Nature">Nature</option>
+            <option value="Film">Film</option>
+            <option value="Dance">Dance</option>
+            <option value="Literature">Literature</option>
+            <option value="Cultural Events">Cultural Events</option>
+            <option value="Science & Innovation">Science & Innovation</option>
         </select>
         <!-------On Campus Button-------->
         <div class="toggle-container">
@@ -92,17 +101,26 @@
     <div class="categories">
         <h2>Popular Categories</h2>
         <div class="category-buttons">
-            <button class="category-button">Concert</button>
+            <button class="category-button">Music</button>
+            <button class="category-button">Sports</button>
+            <button class="category-button">Technology</button>
             <button class="category-button">Art</button>
-            <button class="category-button">Gaming</button>
-            <button class="category-button">Networking</button>
-            <button class="category-button">Food</button>
-            <button class="category-button">Photography</button>
-            <button class="category-button">Film</button>
             <button class="category-button">Health & Wellness</button>
+            <button class="category-button">Gaming</button>
+            <button class="category-button">Food</button>
+            <button class="category-button">Travel</button>
+            <button class="category-button">Fitness</button>
+            <button class="category-button">Photography</button>
+            <button class="category-button">Networking</button>
             <button class="category-button">Community Service</button>
+            <button class="category-button">Workshops</button>
+            <button class="category-button">Startups</button>
+            <button class="category-button">Nature</button>
+            <button class="category-button">Film</button>
             <button class="category-button">Dance</button>
+            <button class="category-button">Literature</button>
             <button class="category-button">Cultural Events</button>
+            <button class="category-button">Science & Innovation</button>
         </div>
     </div>
 
