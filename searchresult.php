@@ -8,29 +8,36 @@
     <title>Event Search Page</title>
 </head>
 <?php
-//
-//$host = "webdev.iyaserver.com";
-//$userid = "<youruserid>";
-//$userpw = "<yourpw>";
-//$db = "<database name>";
-//
-//include 'loginvariables.php';
-//
-//
-//$mysql = new mysqli(
-//    $host,
-//    $userid,
-//    $userpw,
-//    $db
-//);
-//
-//if ($mysql->connect_errno) {
-//    echo "db connection error : " . $mysql->connect_error;
-//    exit();
-//}
-//
-//echo "db connection succeeded\n";
-//?>
+
+$host = "webdev.iyaserver.com";
+$userid = "<youruserid>";
+$userpw = "<yourpw>";
+$db = "<database name>";
+
+include 'loginvariables.php';
+
+
+$mysql = new mysqli(
+    $host,
+    $userid,
+    $userpw,
+    $db
+);
+
+if ($mysql->connect_errno) {
+    echo "db connection error : " . $mysql->connect_error;
+    exit();
+}
+
+$sql = "SELECT * FROM event_types";
+
+$results = $mysql->query($sql);
+
+if(!$results) {
+    echo "SQL error: ". $mysql->error . " running query <hr>" . $sql . "<hr>";
+    exit();
+}
+?>
 <body>
 <?php include "header.php"; ?>
 
@@ -50,123 +57,112 @@
 <!-----------------------------------------------NEEDS PHP HERE--------------------------------------------------------->
 <!---------------------------------------------------------------------------------------------------------------------->
 
-    <div class="search-bar">
-        <!-------Category Dropdown-------->
-        <select id="category">
-            <option value="Music">Select Category</option>
-            <option value="Music">Music</option>
-            <option value="Sports">Sports</option>
-            <option value="Technology">Technology</option>
-            <option value="Art">Art</option>
-            <option value="Health & Wellness">Health & Wellness</option>
-            <option value="Gaming">Gaming</option>
-            <option value="Food">Food</option>
-            <option value="Travel">Travel</option>
-            <option value="Fitness">Fitness</option>
-            <option value="Photography">Photography</option>
-            <option value="Networking">Networking</option>
-            <option value="Community Service">Community Service</option>
-            <option value="Workshops">Workshops</option>
-            <option value="Startups">Startups</option>
-            <option value="Nature">Nature</option>
-            <option value="Film">Film</option>
-            <option value="Dance">Dance</option>
-            <option value="Literature">Literature</option>
-            <option value="Cultural Events">Cultural Events</option>
-            <option value="Science & Innovation">Science & Innovation</option>
+    <form class="search-bar" action="eventresultspage.php">
+        <input type="text" name="eventname" placeholder="Find an event" style="width: 300px">
+        <select name="category">
+            <option value="All">Select Category</option>
+            <?php
+            while($currentrow = $results->fetch_assoc()){
+            echo "<option value='" . $currentrow['event_type'] . "'>" . $currentrow['event_type'] . "</option>";
+            }
+            ?>
         </select>
         <!-------On Campus Button-------->
-        <div class="toggle-container">
-            <span>On-Campus Only</span>
-            <div class="toggle" id="campus-toggle">
-                <div class="toggle-thumb"></div>
-            </div>
-        </div>
+        <span>On-Campus Only</span>
+        <label class="switch">
+            <input type="checkbox" name="toggle">
+            <span class="slider round"></span>
+        </label>
+
         <!-------Date-------->
-        <input type="date">
-        <!------Distance------->
-        <input type="text" placeholder="Distance (miles)">
-        <!-----Zip Code------>
-        <input type="text" placeholder="ZIP Code">
+        <input type="date" name="date">
+
 
         <!---Search Button---->
-        <button class="search-button">
+        <button type="submit" value="submit" class="search-button">
             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
             Search
         </button>
-    </div>
+    </form>
 
     <div class="categories">
         <h2>Popular Categories</h2>
         <div class="category-buttons">
-            <button class="category-button">Music</button>
-            <button class="category-button">Sports</button>
-            <button class="category-button">Technology</button>
-            <button class="category-button">Art</button>
-            <button class="category-button">Health & Wellness</button>
-            <button class="category-button">Gaming</button>
-            <button class="category-button">Food</button>
-            <button class="category-button">Travel</button>
-            <button class="category-button">Fitness</button>
-            <button class="category-button">Photography</button>
-            <button class="category-button">Networking</button>
-            <button class="category-button">Community Service</button>
-            <button class="category-button">Workshops</button>
-            <button class="category-button">Startups</button>
-            <button class="category-button">Nature</button>
-            <button class="category-button">Film</button>
-            <button class="category-button">Dance</button>
-            <button class="category-button">Literature</button>
-            <button class="category-button">Cultural Events</button>
-            <button class="category-button">Science & Innovation</button>
+
+
+            <?php
+            $results -> data_seek(0);
+            while($currentrow = $results->fetch_assoc()){
+                echo "<button class='category-button'>" . $currentrow['event_type'] . "</button>";
+
+            }
+            ?>
         </div>
     </div>
 
     <div class="events">
         <h2>Events Of The Month</h2>
         <p>Discover the upcoming trending events</p>
+        <?php
+        $sql1 = "SELECT * FROM eventview WHERE event_date >= CURRENT_DATE() ORDER BY event_date DESC LIMIT 4";
+
+        $results1 = $mysql->query($sql1);
+
+        if(!$results1) {
+            echo "SQL error: ". $mysql->error . " running query <hr>" . $sql1 . "<hr>";
+            exit();
+        }
+
+
+        ?>
+
+
         <div class="event-grid">
-            <div class="event-card">
-                <div class="event-placeholder">Event Image Placeholder</div>
-            </div>
-            <div class="event-card">
-                <div class="event-placeholder">Event Image Placeholder</div>
-            </div>
-            <div class="event-card">
-                <div class="event-placeholder">Event Image Placeholder</div>
-            </div>
-            <div class="event-card">
-                <div class="event-placeholder">Event Image Placeholder</div>
-            </div>
+            <?php while($event = $results1->fetch_assoc()): ?>
+
+                <div class="event-tile">
+                    <div class="event-image" style="background-image: url('images/arrow.png');"></div>
+                    <div class="event-content">
+                        <div class="event-title"><?php echo $event['event_name']?></div>
+                        <div class="event-details">
+                            <div>
+                                <?php echo date('D, M j', strtotime($event['event_date'])); ?> • <?php echo date('g:ia', strtotime($event['event_date'])); ?>
+                            </div>
+
+                            <div><?php echo $event['location'] ?></div>
+                        </div>
+                    </div>
+                </div>
+            <?php endwhile; ?>
         </div>
     </div>
 </div>
 
-<script>
-    // Toggle functionality
-    const toggle = document.getElementById('campus-toggle');
-    toggle.addEventListener('click', function() {
-        this.classList.toggle('active');
-    });
-
-    // Category buttons
-    const categoryButtons = document.querySelectorAll('.category-button');
-    categoryButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            console.log('Selected category:', this.textContent);
-        });
-    });
-
-    // Search button
-    const searchButton = document.querySelector('.search-button');
-    searchButton.addEventListener('click', function() {
-        const category = document.getElementById('category').value;
-        const isOnCampus = document.getElementById('campus-toggle').classList.contains('active');
-        console.log('Search clicked:', { category, isOnCampus });
-    });
-</script>
+<!--<script>-->
+<!--    // Toggle functionality-->
+<!--    const toggle = document.getElementById('campus-toggle');-->
+<!--    toggle.addEventListener('click', function() {-->
+<!--        this.classList.toggle('active');-->
+<!--    });-->
+<!---->
+<!--    // Category buttons-->
+<!--    const categoryButtons = document.querySelectorAll('.category-button');-->
+<!--    categoryButtons.forEach(button => {-->
+<!--        button.addEventListener('click', function() {-->
+<!--            console.log('Selected category:', this.textContent);-->
+<!--        });-->
+<!--    });-->
+<!---->
+<!--    // Search button-->
+<!--    const searchButton = document.querySelector('.search-button');-->
+<!--    searchButton.addEventListener('click', function() {-->
+<!--        const category = document.getElementById('category').value;-->
+<!--        const isOnCampus = document.getElementById('campus-toggle').classList.contains('active');-->
+<!--        console.log('Search clicked:', { category, isOnCampus });-->
+<!--    });-->
+<!--</script>-->
 
     <footer>
         <p>SafeCircle &nbsp;|&nbsp; Los Angeles, California &nbsp;|&nbsp; 2024 All Rights Reserved</p>

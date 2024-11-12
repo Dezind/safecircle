@@ -244,7 +244,7 @@
 
         <h1 class="tagline">Discover New Friends and Events – <br>
             Find Your Safe Circle for Every Adventure</h1>
-        <button onclick="window.location.href='1_signup.html'" class="rounded-button">Join Now</button>
+        <button onclick="window.location.href='signuppage.php'" class="rounded-button">Join Now</button>
         <br>
         <!--DOWN ARROW SCROLL BUTTON TEST-->
         <img class="arrow" src="images/arrow.png" alt="pic of arrow" onClick="document.getElementById('concerts').scrollIntoView({ behavior: 'smooth' });" />
@@ -269,7 +269,7 @@
 
     <section class="section" id="join">
         <h2>FIND YOUR SAFECIRCLE</h2>
-        <button onclick="window.location.href='1_signup.html'">Join Now</button>
+        <button onclick="window.location.href='signuppage.php'">Join Now</button>
     </section>
 
     <footer>
