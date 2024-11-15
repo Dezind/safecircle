@@ -211,7 +211,8 @@ canvas {
 }
 
 .search-bar {
-    background-color: #1f2937;
+    color: white;
+    background-color: black;
     padding: 1rem;
     border-radius: 0.5rem;
     margin-top: 30px;
@@ -220,15 +221,20 @@ canvas {
     gap: 20px;
     align-items: center;
     justify-content: space-between;
+    border: 1px solid white;
 }
 
 .search-bar select,
 .search-bar input {
-    background-color: #374151;
+    color: white;
+    background-color: black;
     color: white;
     padding: 0.5rem;
     border: none;
     border-radius: 0.375rem;
+    border: 1px solid white;
+    justify-content: center; /* Horizontal centering */
+    
 
     /*min-width: 100px;*/
 }
@@ -283,11 +289,11 @@ canvas {
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: black;
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px black;
 }
 
 input:checked + .slider:before {
@@ -306,15 +312,23 @@ input:checked + .slider:before {
 }
 
 .search-button {
-    background-color: #2563eb;
+    background-color: black;
     color: white;
-    padding: 0.5rem 1.5rem;
-    border: none;
+    padding: 0.5rem 1.2rem;
     border-radius: 0.375rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    border: white 1px solid;
+}
+
+.svg {
+    stroke: white !important;
+}
+
+.search-button {
+    color: white; /* This will make the "Search" text white */
 }
 
 .categories {
@@ -394,7 +408,8 @@ input:checked + .slider:before {
 
 }
 .filters {
-    background-color: #fff;
+    background-color: black;
+    color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 1rem;
     border-radius: 0.5rem;
@@ -406,11 +421,12 @@ input:checked + .slider:before {
 }
 .filters select,
 .filters input{
-    background-color: #c5c5c5;
-    color: #000000;
+    background-color: transparent;
+    color: white;
     padding: 0.5rem;
     border: none;
     border-radius: 0.375rem;
+    border: white 1px solid;
     flex: 1;
     /*min-width: 100px;*/
 }
