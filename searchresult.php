@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link type="text/css" href="css/site.css" rel="stylesheet">
     <title>Event Search Page</title>
 </head>
@@ -47,7 +48,7 @@ if(!$results) {
     <div class="hero2-content">
 
         <h1>GROUP EVENTS</h1>
-        <p>You'll find all the excitement right here!</p>
+        <p>Find All The Excitement Here</p>
     </div>
 </div>
 
@@ -57,7 +58,7 @@ if(!$results) {
 <!-----------------------------------------------NEEDS PHP HERE--------------------------------------------------------->
 <!---------------------------------------------------------------------------------------------------------------------->
 
-    <form class="search-bar" action="eventresultspage.php">
+    <form class="search-bar" action="eventresultspage.php" style="margin-top: 30px">
         <input type="text" name="eventname" placeholder="Find an event" style="width: 300px">
         <select name="category">
             <option value="All">Select Category</option>
@@ -68,34 +69,43 @@ if(!$results) {
             ?>
         </select>
         <!-------On Campus Button-------->
-        <span>On-Campus Only</span>
-        <label class="switch">
-            <input type="checkbox" name="toggle">
-            <span class="slider round"></span>
-        </label>
+        <div class="campus-filter" style='font-family: "Helvetica Neue", serif;'>
+            <span>On-Campus Only</span>
+            <label class="switch">
+                <input type="checkbox" name="toggle">
+                <span class="slider round"></span>
+            </label>
+        </div>
 
         <!-------Date-------->
-        <input type="date" name="date">
+        <div class="date-input-container">
+            <input type="date" name="date" id="dateInput">
+            <button type="button" class="calendar-button" onclick="document.getElementById('dateInput').showPicker()">
+                <svg class="calendar-icon" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M 6 4 h 12 a 2 2 0 0 1 2 2 v 10 a 2 2 0 0 1 -2 2 H 6 a 2 2 0 0 1 -2 -2 V 6 a 2 2 0 0 1 2 -2 M 4 8 h 16 M 8 2 v 4 M 16 2 v 4"></path>
+                </svg>
+            </button>
+        </div>
 
 
         <!---Search Button---->
         <button type="submit" value="submit" class="search-button">
-            <svg class="svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            <svg class="svg" width="28" height="28" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 18 18 l -5 -5 m 2 -4 a 6 6 0 1 1 -12 0 a 6 6 0 0 1 12 0 Z"></path>
             </svg>
-            Search
+
         </button>
     </form>
 
     <div class="categories">
         <h2>Popular Categories</h2>
-        <div class="category-buttons">
+        <div class="category-buttons" style="font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;">
 
 
             <?php
             $results -> data_seek(0);
             while($currentrow = $results->fetch_assoc()){
-                echo "<button class='category-button'>" . $currentrow['event_type'] . "</button>";
+                echo "<button class='category-button' >" . $currentrow['event_type'] . "</button>";
 
             }
             ?>
@@ -150,7 +160,50 @@ if(!$results) {
 <!--        console.log('Search clicked:', { category, isOnCampus });-->
 <!--    });-->
 <!--</script>-->
+<div class="cursor"></div>
 
+<script>
+
+    document.addEventListener('mousemove', (e) => {
+        document.body.style.setProperty('--x', e.clientX + 'px');
+        document.body.style.setProperty('--y', e.clientY + 'px');
+    });
+
+    // Add click effect
+    document.addEventListener('click', (e) => {
+        createSparkles(e.clientX, e.clientY);
+    });
+
+    function createSparkles(x, y) {
+        const sparkleCount = 8;
+
+        for(let i = 0; i < sparkleCount; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+
+            const size = Math.random() * 8 + 4;
+            sparkle.style.width = `${size}px`;
+            sparkle.style.height = `${size}px`;
+
+            const angle = (Math.PI * 2 * i) / sparkleCount;
+            const distance = Math.random() * 50 + 30;
+
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+
+            sparkle.style.left = `${x}px`;
+            sparkle.style.top = `${y}px`;
+            sparkle.style.setProperty('--tx', `${tx}px`);
+            sparkle.style.setProperty('--ty', `${ty}px`);
+
+            document.body.appendChild(sparkle);
+
+            setTimeout(() => {
+                sparkle.remove();
+            }, 800);
+        }
+    }
+</script>
     <footer>
         <p>SafeCircle &nbsp;|&nbsp; Los Angeles, California &nbsp;|&nbsp; 2024 All Rights Reserved</p>
     </footer>
