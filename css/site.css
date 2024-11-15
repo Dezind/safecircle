@@ -716,7 +716,8 @@ body.results-page .event-tile {
     height: 180px;
     background-size: cover;
     background-position: center;
-    border-radius: 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 .event-content {
     padding: 15px;
