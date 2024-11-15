@@ -768,9 +768,9 @@ body.results-page .filter-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent);
+    background: transparent;
     border-radius: 8px;
-    z-index: 1001; 
+    z-index: 1001;
     transition: left 0.3s ease, transform 0.3s ease;
 }
 
