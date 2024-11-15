@@ -106,7 +106,7 @@ if(!$results) {
         <h2>Events Of The Month</h2>
         <p>Discover the upcoming trending events</p>
         <?php
-        $sql1 = "SELECT * FROM eventview WHERE event_date >= CURRENT_DATE() ORDER BY event_date DESC LIMIT 4";
+        $sql1 = "SELECT * FROM eventview WHERE event_date >= CURRENT_DATE() ORDER BY event_date ASC LIMIT 4";
 
         $results1 = $mysql->query($sql1);
 
@@ -120,21 +120,8 @@ if(!$results) {
 
 
         <div class="event-grid">
-            <?php while($event = $results1->fetch_assoc()): ?>
-
-                <div class="event-tile">
-                    <div class="event-image" style="background-image: url('images/arrow.png');"></div>
-                    <div class="event-content">
-                        <div class="event-title"><?php echo $event['event_name']?></div>
-                        <div class="event-details">
-                            <div>
-                                <?php echo date('D, M j', strtotime($event['event_date'])); ?> • <?php echo date('g:ia', strtotime($event['event_date'])); ?>
-                            </div>
-
-                            <div><?php echo $event['location'] ?></div>
-                        </div>
-                    </div>
-                </div>
+            <?php while($currentrow = $results1->fetch_assoc()): ?>
+<?php include 'event_tile.php'; ?>
             <?php endwhile; ?>
         </div>
     </div>

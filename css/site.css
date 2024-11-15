@@ -437,8 +437,8 @@ input:checked + .slider:before {
 .event-tile {
     width: 300px;
     border-radius: 8px;
-    overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 .event-image {
     width: 100%;
@@ -448,8 +448,6 @@ input:checked + .slider:before {
 }
 .event-content {
     padding: 15px;
-    background-color: #fff;
-
 
 }
 

@@ -110,21 +110,8 @@ $date = $_REQUEST['date'];
     ?>
 
     <div class="results">
-        <?php while($event = $results1->fetch_assoc()): ?>
-
-            <div class="event-tile">
-                <div class="event-image" style="background-image: url('images/arrow.png');"></div>
-                <div class="event-content">
-                    <div class="event-title"><?php echo $event['event_name']?></div>
-                    <div class="event-details">
-                        <div>
-                            <?php echo date('D, M j', strtotime($event['event_date'])); ?> • <?php echo date('g:ia', strtotime($event['event_date'])); ?>
-                        </div>
-
-                        <div><?php echo $event['location'] ?></div>
-                    </div>
-                </div>
-            </div>
+        <?php while($currentrow = $results1->fetch_assoc()): ?>
+        <?php include 'event_tile.php'?>
         <?php endwhile; ?>
     </div>
 </div>
