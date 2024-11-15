@@ -234,7 +234,7 @@ canvas {
     border-radius: 0.375rem;
     border: 1px solid white;
     justify-content: center; /* Horizontal centering */
-    
+
 
     /*min-width: 100px;*/
 }
@@ -271,7 +271,7 @@ canvas {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: gray;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -289,7 +289,7 @@ canvas {
 }
 
 input:checked + .slider {
-    background-color: black;
+    background-color: powderblue;
 }
 
 input:focus + .slider {
