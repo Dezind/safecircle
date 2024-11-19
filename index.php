@@ -295,19 +295,104 @@
     </section>
 
     <section class="section" id="concerts">
-        <h3>DISCOVER EVENTS</h3>
+
+        <h3>DISCOVER EVENTS</h3><br>
         <button onclick="window.location.href='searchresult.php'" class="rounded-button">Find Events</button>
     </section>
 
-    <section class="section" id="conventions">
-        <h3>MEET FRIENDS</h3>
-        <button onclick="alert('Search Conventions')" class="rounded-button">Find Friends</button>
+    <div class="hover-gallery">
+        <img src="images/galleryphotos/party1.gif" alt="placeholder">
+        <img src="images/galleryphotos/party2.gif" alt="placeholder">
+        <img src="images/galleryphotos/party3.gif" alt="placeholder">
+        <img src="images/galleryphotos/party4.gif" alt="placeholder">
+    </div>
+
+    <section class="section" id="friends">
+        <h3>MEET FRIENDS</h3><br>
+        <button onclick="alert('FIND FRIENDS (COMING SOON)')" class="rounded-button">Find Friends</button>
     </section>
 
+<!-- (GONNA TRY TO FIX THIS - TONGFEI)
+    <div class="hover-gallery">
+        <img src="images/banners/banner.png" alt="placeholder">
+        <img src="images/banners/banner.png" alt="placeholder">
+        <img src="images/banners/banner.png" alt="placeholder">
+        <img src="images/banners/banner.png" alt="placeholder">
+    </div>
+-->
     <section class="section" id="events">
-        <h3>MAKE MEMORIES</h3>
-        <button onclick="alert('Search Events')" class="rounded-button">Join SafeCircle</button>
+        <h3>MAKE MEMORIES</h3><br>
+        <button onclick="alert('LOGIN PAGE')" class="rounded-button">Join SafeCircle</button>
     </section>
+
+<!-- (GONNA TRY TO FIX THIS - TONGFEI)
+    <div class="hover-gallery">
+        <img src="images/banners/banner.png" alt="placeholder">
+        <img src="images/banners/banner.png" alt="placeholder">
+        <img src="images/banners/banner.png" alt="placeholder">
+        <img src="images/banners/banner.png" alt="placeholder">
+    </div>
+-->
+
+<!--------------------HOVER GALLERY CODE---------------------->
+    <script>
+        const heading = document.querySelector('h3');
+        const gallery = document.querySelector('.hover-gallery');
+
+        heading.addEventListener('mouseenter', () => {
+            gallery.classList.add('visible');
+        });
+
+        heading.addEventListener('mouseleave', () => {
+            gallery.classList.remove('visible');
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            const offset = -250; // Distance from cursor
+            gallery.style.left = `${e.clientX + offset}px`;
+            gallery.style.top = `${e.clientY + offset}px`;
+        });
+    </script>
+
+
+    <script>
+        const heading2 = document.querySelector('#friends');
+        const gallery2 = document.querySelector('.hover-gallery');
+
+        heading2.addEventListener('mouseenter', () => {
+            gallery2.classList.add('visible');
+        });
+
+        heading2.addEventListener('mouseleave', () => {
+            gallery2.classList.remove('visible');
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            const offset = -250; // Distance from cursor
+            gallery2.style.left = `${e.clientX + offset}px`;
+            gallery2.style.top = `${e.clientY + offset}px`;
+        });
+    </script>
+
+    <script>
+        const heading3 = document.querySelector('#events');
+        const gallery3 = document.querySelector('.hover-gallery');
+
+        heading3.addEventListener('mouseenter', () => {
+            gallery2.classList.add('visible');
+        });
+
+        heading3.addEventListener('mouseleave', () => {
+            gallery2.classList.remove('visible');
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            const offset = -250; // Distance from cursor
+            gallery3.style.left = `${e.clientX + offset}px`;
+            gallery3.style.top = `${e.clientY + offset}px`;
+        });
+    </script>
+<!--------------------HOVER GALLERY CODE---------------------->
 
     <section class="section" id="join">
         <h2>FIND YOUR SAFECIRCLE</h2>

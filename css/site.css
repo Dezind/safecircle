@@ -139,6 +139,7 @@ a h1 {
 .section {
     padding: 50px 20px;
     text-align: center;
+
 }
 .section h2 {
     font-size: 2.5rem;
@@ -152,6 +153,7 @@ a h1 {
     font-style: italic;
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
 .section button {
     border-radius: 50px;
     background-color: #000;
@@ -190,6 +192,7 @@ img.arrow {
     transition: all 0.3s ease;
     position: relative;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    z-index: 998;
 }
 
 .rounded-button:hover {
@@ -277,8 +280,9 @@ canvas {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0; /* Ensure the canvas is below the content */
+    z-index: 0;
     opacity: 1;
+    pointer-events: none;
 }
 
 /*--------------------------------------SEARCH RESULT PAGE---------------------------------------------*/
@@ -831,5 +835,38 @@ body.results-page .results {
         gap: 50px;
     }
 }
+/*-------------------------HOVER GALLERY-------------------------*/
+h3 {
+    font-size: 24px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    z-index: 999;
+}
+h2 {
+    display: inline-block;
 
+    position: relative;
+    z-index: 999;
+}
+.hover-gallery {
+    position: fixed;
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: repeat(2, 400px);
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
 
+.hover-gallery.visible {
+    opacity: 1;
+}
+
+.hover-gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #eee;
+}
