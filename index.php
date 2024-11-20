@@ -397,7 +397,7 @@
     <section class="section" id="join">
         <h2>FIND YOUR SAFECIRCLE</h2>
         <br>
-        <button onclick="window.location.href='signuppage.php'">Join Now</button>
+        <button onclick="window.location.href='signuppage.php'" class="rounded-button" >Join Now</button>
     </section>
 
     <footer>
