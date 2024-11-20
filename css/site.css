@@ -355,11 +355,11 @@ canvas {
 }
 
 .search-bar {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
     color: white;
     background-color: rgba(0, 0, 0, 0.4);
     padding: 0.8rem 1.5rem;
     border-radius: 50px;
-
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -375,13 +375,13 @@ canvas {
 .search-bar select {
     background-color: transparent;
     color: white;
-
     border: none;
     font-size: 14px;
     transition: all 0.3s ease;
 }
 
 .search-bar input {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: transparent !important;
     color: white !important;
     padding: 0.5rem 1rem;
@@ -588,12 +588,14 @@ input[type="date"] {
 }
 
 .category-buttons {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
 }
 
 .category-button {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: black;
     color: white;
     padding: 0.5rem 1rem;
