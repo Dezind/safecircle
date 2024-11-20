@@ -8,12 +8,12 @@ body {
 }
 
 :root {
-    --x: 50%;
-    --y: 50%;
+    --x: 60%;
+    --y: 60%;
     --tx: 0px;
     --ty: 0px;
-    --cursor-color: rgb(250, 252, 255);
-    --cursor-glow: rgb(245, 250, 255);
+    --cursor-color: rgb(251, 251, 251);
+    --cursor-glow: rgb(251, 251, 255);
 }
 
 * {
@@ -202,6 +202,7 @@ img.arrow {
     0 0 40px rgba(255, 255, 255, 0.2);
     transform: scale(1.02);
     background: rgba(255, 255, 255, 0.1);
+    animation: glow 1.5s ease-in-out infinite;
 }
 
 .rounded-button:active {
@@ -606,7 +607,13 @@ input[type="date"] {
 }
 
 .category-button:hover {
-    background-color: #4b5563;
+    border-color: white;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 30px rgba(255, 255, 255, 0.3),
+    0 0 40px rgba(255, 255, 255, 0.2);
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.1);
+    animation: glow 1.5s ease-in-out infinite;
 }
 
 .events {
@@ -706,6 +713,15 @@ input[type="date"] {
     border: white 0.5px solid;
     margin-left: 0px;
 
+}
+.event-tile:hover{
+    border-color: white;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 30px rgba(255, 255, 255, 0.3),
+    0 0 40px rgba(255, 255, 255, 0.2);
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.1);
+    animation: glow 1.5s ease-in-out infinite;
 }
 body.results-page .event-tile {
     width: 400px;
