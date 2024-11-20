@@ -396,6 +396,7 @@
 
     <section class="section" id="join">
         <h2>FIND YOUR SAFECIRCLE</h2>
+        <br>
         <button onclick="window.location.href='signuppage.php'">Join Now</button>
     </section>
 
