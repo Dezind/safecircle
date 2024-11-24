@@ -58,10 +58,10 @@ if(!$results) {
 <!-----------------------------------------------NEEDS PHP HERE--------------------------------------------------------->
 <!---------------------------------------------------------------------------------------------------------------------->
 
-    <form class="search-bar" action="eventresultspage.php" style="margin-top: 30px">
+    <form class="search-bar" action="eventresultspage.php" style="margin-top: 30px" style='font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;'>
         <input type="text" name="eventname" placeholder="Find an event" style="width: 300px">
-        <select name="category">
-            <option value="All">Select Category</option>
+        <select name="category" style='font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;'>
+            <option value="All" style='font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;'>Select Category</option>
             <?php
             while($currentrow = $results->fetch_assoc()){
             echo "<option value='" . $currentrow['event_type'] . "'>" . $currentrow['event_type'] . "</option>";
@@ -69,7 +69,7 @@ if(!$results) {
             ?>
         </select>
         <!-------On Campus Button-------->
-        <div class="campus-filter" style='font-family: "Helvetica Neue", serif;'>
+        <div class="campus-filter" style='font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;'>
             <span>On-Campus Only</span>
             <label class="switch">
                 <input type="checkbox" name="toggle">
