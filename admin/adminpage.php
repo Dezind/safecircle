@@ -35,7 +35,7 @@ if (!$eventresults) {
         }
         .container {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 20px;
         }
         .section {
@@ -101,10 +101,8 @@ if (!$eventresults) {
     <div class="section">
         <h2>Event Edit</h2>
         <label for="event_id">Edit an Event:</label>
-        <form action="" method="post">
+        <form action="editeventform.php" method="post">
             <select id="event_id" name="event_id">
-                <option value="Add">Edit an existing event</option>
-                <option value="">---------------</option>
                 <?php while ($currentrow = $eventresults->fetch_assoc()) {
                     echo "<option value='" . $currentrow['event_id'] . "'>" . $currentrow['event_name'] . "</option>";
                 } ?>
@@ -112,6 +110,15 @@ if (!$eventresults) {
             <button type="submit">Next</button>
             <br><br>
             <a href="addeventform.php" class="add-event">Add an Event <span class="plus">+</span></a>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Add a New Event Type</h2>
+        <label for="event_type">New Event Type:</label>
+        <form action="inserttype.php" method="post">
+            <input type="text" name="event_type" id="event_type" placeholder="Event Type"><br></br>
+            <button type="submit">Next</button>
         </form>
     </div>
 
