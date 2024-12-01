@@ -322,7 +322,7 @@
 -->
     <section class="section" id="events">
         <h3>MAKE MEMORIES</h3><br>
-        <button onclick="alert('LOGIN PAGE')" class="rounded-button">Join SafeCircle</button>
+        <button onclick="window.location.href='signuppage.php'">Join SafeCircle</button>
     </section>
 
 <!-- (GONNA TRY TO FIX THIS - TONGFEI)

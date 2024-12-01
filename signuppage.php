@@ -7,6 +7,117 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link type="text/css" href="css/site.css" rel="stylesheet">
     <title>SIGN UP / LOG IN</title>
+    <style>
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+            margin-top:-150px;
+        }
+
+        .auth-box {
+            background: rgba(0, 0, 0, 0.01);
+            backdrop-filter: blur(2px);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.01);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            color: white;
+            border-bottom: 2px solid white;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-button:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .auth-footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .auth-footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <?php
 //
@@ -215,10 +326,52 @@
     <div>
         <?php include "header.php"; ?>
 
+        <!-------------------------------<login/signup>------------------------------------->
         <section class="hero">
-            <br><br><br><br><br><br><br><br><br><br><br><br><br>
-            <h1 class="tagline">LOG IN / SIGN UP PAGE (COMING SOON)</h1>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <div class="auth-container">
+                <div class="auth-box">
+                    <div class="auth-tabs">
+                        <div class="auth-tab active" onclick="switchTab('login')">Log In</div>
+                        <div class="auth-tab" onclick="switchTab('signup')">Sign Up</div>
+                    </div>
+                    <!-- Replace both form tags and the submit buttons with this: -->
+
+                    <form class="auth-form active" id="login-form">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-input">
+                        </div>
+                        <a href="homepage.php" class="auth-button" style="text-align: center; display: block; text-decoration: none;">Log In</a>
+                        <div class="auth-footer">
+                            <a href="#">Forgot password?</a>
+                        </div>
+                    </form>
+
+                    <form class="auth-form" id="signup-form">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-input">
+                        </div>
+                        <a href="homepage.php" class="auth-button" style="text-align: center; display: block; text-decoration: none;">Sign Up</a>
+                    </form>
+                </div>
+            </div>
         </section>
 
 
@@ -263,6 +416,26 @@
                     setTimeout(() => {
                         sparkle.remove();
                     }, 800);
+                }
+            }
+        </script>
+
+
+        <!-------------------------------<login>------------------------------------->
+
+        <script>
+            function switchTab(tab) {
+                // Remove active class from all tabs and forms
+                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+
+                // Add active class to selected tab and form
+                if(tab === 'login') {
+                    document.querySelector('#login-form').classList.add('active');
+                    document.querySelectorAll('.auth-tab')[0].classList.add('active');
+                } else {
+                    document.querySelector('#signup-form').classList.add('active');
+                    document.querySelectorAll('.auth-tab')[1].classList.add('active');
                 }
             }
         </script>
