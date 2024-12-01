@@ -1,3 +1,41 @@
+<?php
+
+$host = "webdev.iyaserver.com";
+$userid = "<youruserid>";
+$userpw = "<yourpw>";
+$db = "<database name>";
+
+include 'loginvariables.php';
+
+
+$mysql = new mysqli(
+    $host,
+    $userid,
+    $userpw,
+    $db
+);
+
+if ($mysql->connect_errno) {
+    echo "db connection error : " . $mysql->connect_error;
+    exit();
+}
+
+$id = $_REQUEST['id'];
+
+$sql = "SELECT * FROM users WHERE user_id = '$id'";
+
+$results = $mysql->query($sql);
+
+if (!$results) {
+    echo "Database query failed " . $mysql->error;
+}
+
+if ($results->num_rows > 0) {
+    $row = $results->fetch_assoc();
+    $fname = htmlspecialchars($row['fname']);
+    $userid = $row['user_id'];
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,14 +56,13 @@
 <?php include "cursor.php"; ?>
 
 <div id="content" style="display:none;">
-<?php include "header.php"; ?>
-
+    <?php include "nav.php"; ?>
     <section class="hero">
         <br><br><br><br><br><br><br><br>
 
-        <h1 class="tagline">Discover New Friends and Events – <br>
-            Find Your Safe Circle for Every Adventure</h1>
-        <button onclick="window.location.href='emailcheckpage.php'" class="rounded-button">Join Now</button>
+        <h1 class="tagline" id="greeting"></h1>
+
+        <button onclick="window.location.href='searchresult.php'" class="rounded-button">Find an Event</button>
         <br>
         <!--DOWN ARROW SCROLL BUTTON TEST-->
         <img class="arrow" src="images/arrow.png" alt="pic of arrow" onClick="document.getElementById('concerts').scrollIntoView({ behavior: 'smooth' });" />
@@ -51,29 +88,49 @@
         <button onclick="alert('FIND FRIENDS (COMING SOON)')" class="rounded-button">Find Friends</button>
     </section>
 
-<!-- (GONNA TRY TO FIX THIS - TONGFEI)
-    <div class="hover-gallery">
-        <img src="images/banners/banner.png" alt="placeholder">
-        <img src="images/banners/banner.png" alt="placeholder">
-        <img src="images/banners/banner.png" alt="placeholder">
-        <img src="images/banners/banner.png" alt="placeholder">
-    </div>
--->
+    <!-- (GONNA TRY TO FIX THIS - TONGFEI)
+        <div class="hover-gallery">
+            <img src="images/banners/banner.png" alt="placeholder">
+            <img src="images/banners/banner.png" alt="placeholder">
+            <img src="images/banners/banner.png" alt="placeholder">
+            <img src="images/banners/banner.png" alt="placeholder">
+        </div>
+    -->
     <section class="section" id="events">
         <h3>MAKE MEMORIES</h3><br>
         <button onclick="alert('LOGIN PAGE')" class="rounded-button">Join SafeCircle</button>
     </section>
 
-<!-- (GONNA TRY TO FIX THIS - TONGFEI)
-    <div class="hover-gallery">
-        <img src="images/banners/banner.png" alt="placeholder">
-        <img src="images/banners/banner.png" alt="placeholder">
-        <img src="images/banners/banner.png" alt="placeholder">
-        <img src="images/banners/banner.png" alt="placeholder">
-    </div>
--->
+    <!-- (GONNA TRY TO FIX THIS - TONGFEI)
+        <div class="hover-gallery">
+            <img src="images/banners/banner.png" alt="placeholder">
+            <img src="images/banners/banner.png" alt="placeholder">
+            <img src="images/banners/banner.png" alt="placeholder">
+            <img src="images/banners/banner.png" alt="placeholder">
+        </div>
+    -->
+    <script>
+        function getGreeting() {
+            const currentHour = new Date().getHours();
+            let greeting;
+            let user = "<?php echo $row['fname'] ?>";
 
-<!--------------------HOVER GALLERY CODE---------------------->
+            if (currentHour >= 5 && currentHour < 12) {
+                greeting = "Good Morning, ";
+            } else if (currentHour >= 12 && currentHour < 17) {
+                greeting = "Good Afternoon, ";
+            } else {
+                greeting = "Good Evening, ";
+            }
+
+            let usergreeting = greeting + user;
+
+            document.getElementById("greeting").innerHTML = usergreeting;
+        }
+
+        getGreeting();
+    </script>
+    <!--------------------HOVER GALLERY CODE---------------------->
     <script>
         const heading = document.querySelector('h3');
         const gallery = document.querySelector('.hover-gallery');
@@ -131,7 +188,7 @@
             gallery3.style.top = `${e.clientY + offset}px`;
         });
     </script>
-<!--------------------HOVER GALLERY CODE---------------------->
+    <!--------------------HOVER GALLERY CODE---------------------->
 
     <section class="section" id="join">
         <h2>FIND YOUR SAFECIRCLE</h2>
@@ -139,7 +196,7 @@
         <button onclick="window.location.href='signuppage.php'" class="rounded-button" >Join Now</button>
     </section>
 
-<?php include "footer.php"; ?>
+    <?php include "footer.php"; ?>
 </div>
 
 </body>

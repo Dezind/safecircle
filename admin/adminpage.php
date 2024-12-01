@@ -23,7 +23,6 @@ if (!$eventresults) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="css/site.css">
     <title>Admin Page</title>
     <style>
         body {
@@ -98,6 +97,8 @@ if (!$eventresults) {
 <body>
 <h1>Admin Page</h1>
 <div class="container">
+
+
     <div class="section">
         <h2>Event Edit</h2>
         <label for="event_id">Edit an Event:</label>
@@ -107,7 +108,7 @@ if (!$eventresults) {
                     echo "<option value='" . $currentrow['event_id'] . "'>" . $currentrow['event_name'] . "</option>";
                 } ?>
             </select>
-            <button type="submit">Next</button>
+            <button id="submit">Next</button>
             <br><br>
             <a href="addeventform.php" class="add-event">Add an Event <span class="plus">+</span></a>
         </form>

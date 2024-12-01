@@ -1,3 +1,7 @@
+<?php
+$id
+?>
+
 <header>
     <!------logo------->
     <a href="index.php">
@@ -6,7 +10,7 @@
 
     <a href="index.php"><h1>SAFECIRCLE</h1></a>
     <nav>
-        <a href="https://tongfeiz.webdev.iyaserver.com/safecircle/signuppage.php">Log In</a> |
-        <a href="https://tongfeiz.webdev.iyaserver.com/safecircle/signuppage.php">Sign Up</a>
+        <a href="emailcheckpage.php">Log In</a> |
+        <a href="emailcheckpage.php">Sign Up</a>
     </nav>
 </header>

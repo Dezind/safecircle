@@ -16,9 +16,6 @@ body {
     --cursor-glow: rgb(251, 251, 255);
 }
 
-* {
-    cursor: none;
-}
 
 body::after {
     content: '';

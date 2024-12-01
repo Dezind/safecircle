@@ -20,26 +20,27 @@ if ($mysql->connect_errno) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
-    $password = $_POST['password'];
 
-    // Check if the email and password exist in the database
-    $stmt = $mysql->prepare("SELECT * FROM users WHERE email = ? AND password = ?");
-    $stmt->bind_param("ss", $email, $password);
+    // Check if the email exists in the database
+    $stmt = $mysql->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        $id = $result->fetch_assoc()["user_id"];
-        header("Location: home.php?id=$id");
-        exit();
+        // Redirect to login page if the email exists
+        header("Location: loginpage.php?email=$email");
     } else {
-        $error_message = "Invalid email or password.";
+        // Redirect to signup page if the email does not exist
+        header("Location: signuppage.php?email=" . urlencode($email));
     }
 
     $stmt->close();
     $mysql->close();
+    exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>SIGN UP / LOG IN</title>
 </head>
 <script>
-    function validateEmail() {
+    function validateEmail(){
         var email = document.getElementById('email').value;
 
         // Validate email
@@ -61,29 +62,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 </script>
+<?php
+
+?>
 
 <body>
-<?php include "globe.php" ?>
-<?php include "cursor.php" ?>
+<?php include "globe.php"?>
+<?php include "cursor.php"?>
+
 <?php include "header.php"; ?>
 
 <div class="hero">
-    <!-- First Form -->
-    <form id="login-form" method="post" action="" onsubmit="return validateEmail();">
-        <h1>Login</h1>
-        <?php if (isset($error_message)) : ?>
-            <p style="color: red;"><?php echo $error_message; ?></p>
-        <?php endif; ?>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" value="<?php echo $_REQUEST['email'] ?>" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Login</button>
-    </form>
+    <div id="email-form">
+        <h1>Create Your Account</h1>
+        <form method="POST" onsubmit="return validateEmail();">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit" class="rounded-button" onclick="return loadSignUp()">Next</button>
+        </form>
+    </div>
 </div>
 
 <?php include "footer.php"; ?>
