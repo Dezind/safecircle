@@ -49,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link type="text/css" href="css/site.css" rel="stylesheet">
+    <link type="text/css" href="css/signup.css" rel="stylesheet">
     <title>SIGN UP / LOG IN</title>
 </head>
 <script>
@@ -73,15 +74,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php include "header.php"; ?>
 
 <div class="hero">
-    <div id="email-form">
-        <h1>Create Your Account</h1>
-        <form method="POST" onsubmit="return validateEmail();">
+    <div id="email-form" class="auth-container">
+        <div class="auth-box">
+        <h1 style="font-size: 24px">Please enter your USC email</h1>
+        <form method="POST" onsubmit="return validateEmail();" class="auth-form active">
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" class="form-input" required>
             </div>
             <button type="submit" class="rounded-button" onclick="return loadSignUp()">Next</button>
         </form>
+        </div>
     </div>
 </div>
 

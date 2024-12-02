@@ -48,6 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link type="text/css" href="css/site.css" rel="stylesheet">
+    <link type="text/css" href="css/signup.css" rel="stylesheet">
     <title>SIGN UP / LOG IN</title>
 </head>
 <script>
@@ -68,22 +69,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php include "header.php"; ?>
 
 <div class="hero">
-    <!-- First Form -->
-    <form id="login-form" method="post" action="" onsubmit="return validateEmail();">
+    <div class="auth-container">
+        <div class="auth-box">
         <h1>Login</h1>
+            <hr style="margin-top:0px;margin-bottom:20px;">
+    <form id="login-form" class="auth-form active" method="post" action="" onsubmit="return validateEmail();">
         <?php if (isset($error_message)) : ?>
             <p style="color: red;"><?php echo $error_message; ?></p>
         <?php endif; ?>
         <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" value="<?php echo $_REQUEST['email'] ?>" required>
+            <label for="email" class="form-label">Email:</label>
+            <input type="text" id="email" name="email" value="<?php echo $_REQUEST['email'] ?>" class="form-input" required>
         </div>
         <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" id="password" name="password" class="form-input" required>
         </div>
         <button type="submit">Login</button>
     </form>
+        </div>
+    </div>
 </div>
 
 <?php include "footer.php"; ?>
