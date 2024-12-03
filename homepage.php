@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" href="css/site.css" rel="stylesheet">
-    <title>HOME PAGE</title>
+    <title>HOME PAGE - (purely placeholders)</title>
     <style>
         .containerx {
             max-width: 1200px;
@@ -277,8 +277,13 @@
 
     </style>
 </head>
-<body>
+
+
+<body onload="hideLoadingScreen()">
 <?php include "header2.php"; ?>
+<?php include "globe.php"; ?>
+<?php include "cursor.php"; ?>
+<?php include "loadingscreen.php"; ?>
 
 <div class="containerx">
     <div class="welcometext">Welcome to your SafeCircle, Amy!
@@ -347,7 +352,7 @@
                     <p class="gallery-description">Event #1 Description</p>
                     <div class="button-group">
                         <button class="share-btn">Share</button>
-                        <button class="download-btn">Download</button>
+                        <button class="download-btn">RSVP</button>
                     </div>
                 </div>
             </div>
@@ -358,7 +363,7 @@
                     <p class="gallery-description">Event #2 Description</p>
                     <div class="button-group">
                         <button class="share-btn">Share</button>
-                        <button class="download-btn">Download</button>
+                        <button class="download-btn">RSVP</button>
                     </div>
                 </div>
             </div>
@@ -369,7 +374,7 @@
                     <p class="gallery-description">Event #3 Description</p>
                     <div class="button-group">
                         <button class="share-btn">Share</button>
-                        <button class="download-btn">Download</button>
+                        <button class="download-btn">RSVP</button>
                     </div>
                 </div>
             </div>
@@ -380,7 +385,7 @@
                     <p class="gallery-description">Event #4 Description</p>
                     <div class="button-group">
                         <button class="share-btn">Share</button>
-                        <button class="download-btn">Download</button>
+                        <button class="download-btn">RSVP</button>
                     </div>
                 </div>
             </div>
@@ -401,7 +406,7 @@
                     <p class="gallery-description">Event #5 Description</p>
                     <div class="button-group">
                         <button class="share-btn">Share</button>
-                        <button class="download-btn">Download</button>
+                        <button class="download-btn">RSVP</button>
                     </div>
                 </div>
             </div>
@@ -412,7 +417,7 @@
                     <p class="gallery-description">Event #6 Description</p>
                     <div class="button-group">
                         <button class="share-btn">Share</button>
-                        <button class="download-btn">Download</button>
+                        <button class="download-btn">RSVP</button>
                     </div>
                 </div>
             </div>
@@ -423,7 +428,7 @@
                     <p class="gallery-description">Event #7 Description</p>
                     <div class="button-group">
                         <button class="share-btn">Share</button>
-                        <button class="download-btn">Download</button>
+                        <button class="download-btn">RSVP</button>
                     </div>
                 </div>
             </div>
@@ -434,7 +439,7 @@
                     <p class="gallery-description">Event #8 Description</p>
                     <div class="button-group">
                         <button class="share-btn">Share</button>
-                        <button class="download-btn">Download</button>
+                        <button class="download-btn">RSVP</button>
                     </div>
                 </div>
             </div>
@@ -550,48 +555,7 @@
 
 </div>
 
-<div class="cursor"></div>
 
-<script>
-    document.addEventListener('mousemove', (e) => {
-        document.body.style.setProperty('--x', e.clientX + 'px');
-        document.body.style.setProperty('--y', e.clientY + 'px');
-    });
-
-    document.addEventListener('click', (e) => {
-        createSparkles(e.clientX, e.clientY);
-    });
-
-    function createSparkles(x, y) {
-        const sparkleCount = 8;
-
-        for(let i = 0; i < sparkleCount; i++) {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-
-            const size = Math.random() * 8 + 4;
-            sparkle.style.width = `${size}px`;
-            sparkle.style.height = `${size}px`;
-
-            const angle = (Math.PI * 2 * i) / sparkleCount;
-            const distance = Math.random() * 50 + 30;
-
-            const tx = Math.cos(angle) * distance;
-            const ty = Math.sin(angle) * distance;
-
-            sparkle.style.left = `${x}px`;
-            sparkle.style.top = `${y}px`;
-            sparkle.style.setProperty('--tx', `${tx}px`);
-            sparkle.style.setProperty('--ty', `${ty}px`);
-
-            document.body.appendChild(sparkle);
-
-            setTimeout(() => {
-                sparkle.remove();
-            }, 800);
-        }
-    }
-</script>
 
 <footer>
     <p>SafeCircle &nbsp;|&nbsp; Los Angeles, California &nbsp;|&nbsp; 2024 All Rights Reserved</p>
