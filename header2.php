@@ -1,7 +1,7 @@
 <style>
     .navbar2 {
         background-color: black;
-        padding: 30px 40px; /* Increased padding for thicker header */
+        padding: 30px 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -16,7 +16,7 @@
         display: flex;
         align-items: center;
         gap: 20px;
-        width: 120px; /* Fixed width for left section */
+        width: 120px;
     }
 
     .nav-icon2 {
@@ -94,27 +94,63 @@
         justify-content: center;
     }
 
+    /* Updated profile icon styles */
+    .profile-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
     .profile-icon2 {
         width: 35px;
         height: 35px;
         border-radius: 50%;
-        background-color: #444;
+        background-color: #ffffff;
+        cursor: pointer;
+    }
+
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #333;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        border-radius: 10px;
+        z-index: 1001;
+        margin-top:20px;
+    }
+
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.3s;
+        border-radius: 10px;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #5a5a5a;
+
+    }
+
+
+    .profile-dropdown.active .dropdown-content {
+        display: block;
     }
 </style>
 
 <nav class="navbar2">
     <div class="nav-left2">
-        <!-- Dark/Light mode toggle -->
         <svg class="nav-icon2" viewBox="0 0 24 24" fill="white">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
         </svg>
 
-        <!-- Calendar icon -->
         <svg class="nav-icon2" viewBox="0 0 24 24" fill="white">
             <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
         </svg>
 
-        <!-- Group icon -->
         <svg class="nav-icon2" viewBox="0 0 24 24" fill="white">
             <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
         </svg>
@@ -126,13 +162,11 @@
 
     <div class="search-container2">
         <input type="text" class="search-bar2" placeholder="Search...">
-
         <a href="eventresultspage.php">
-        <svg class="search-icon2" viewBox="0 0 24 24" fill="white">
-            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-        </svg>
+            <svg class="search-icon2" viewBox="0 0 24 24" fill="white">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
         </a>
-
     </div>
 
     <div class="nav-right2">
@@ -143,6 +177,35 @@
             <div class="notification-badge2">1</div>
         </div>
 
-        <div class="profile-icon2"></div>
+        <!--------------------------PROFILE PIC DROPDOWN----------------------------->
+        <div class="profile-dropdown">
+            <div class="profile-icon2"></div>
+            <div class="dropdown-content">
+                <a href="">My Accounts</a>
+                <a href="">SafeCircles</a>
+                <a href="">Upgrade Plan</a>
+                <a href=""><!---- <PUT LINK IN HERE> ---->Logout</a>
+            </div>
+        </div>
     </div>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileDropdown = document.querySelector('.profile-dropdown');
+        const profileIcon = document.querySelector('.profile-icon2');
+
+        // Toggle dropdown on profile icon click
+        profileIcon.addEventListener('click', function(e) {
+            profileDropdown.classList.toggle('active');
+            e.stopPropagation();
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!profileDropdown.contains(e.target)) {
+                profileDropdown.classList.remove('active');
+            }
+        });
+    });
+</script>
