@@ -287,6 +287,8 @@ session_start();
 <?php include "header2.php"; ?>
 <?php include "globe.php"; ?>
 <?php include "cursor.php"; ?>
+
+
 <?php include "loadingscreen.php"; ?>
 
 <hr>
