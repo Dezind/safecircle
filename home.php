@@ -76,14 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body  onload="hideLoadingScreen()">
-<hr>
-Session Variables:
-<?php var_dump($_SESSION) ?>
-<hr>
 
 <?php include "loadingscreen.php"; ?>
-
-<?php include "globe.php"; ?>
 
 <?php include "cursor.php"; ?>
 
@@ -227,6 +221,8 @@ Session Variables:
         <br>
         <button onclick="window.location.href='signuppage.php'" class="rounded-button" >Join Now</button>
     </section>
+
+    <?php include "globe.php"; ?>
 
     <?php include "footer.php"; ?>
 </div>

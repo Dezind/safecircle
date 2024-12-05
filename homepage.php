@@ -9,7 +9,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" href="css/site.css" rel="stylesheet">
     <title>HOME PAGE - (purely placeholders)</title>
-    <style>
+        <style>
         .containerx {
             max-width: 1200px;
             margin: 0 auto;
@@ -28,19 +28,32 @@ session_start();
             color: #888;
         }
 
+        .share-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /*---------------------------<New CSS>----------------------------*/
+
         .filtersx {
+            position: relative;
             display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+            gap: 10px;
         }
 
         .filter-btn {
+            position: relative;
+            cursor: pointer;
             background: transparent;
             color: #fff;
             border: 1px solid #fff;
             padding: 0.5rem 1.5rem;
             border-radius: 50px;
-            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -52,37 +65,36 @@ session_start();
             color: #000;
         }
 
-        .share-btn {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 0.3rem 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #111;
+            top: 100%;
+            left: 0;
+            background-color: #f9f9f9;
             min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
-            border-radius: 5px;
-            margin-top: 5px;
         }
 
         .dropdown-content a {
-            color: #fff;
+            color: black;
             padding: 12px 16px;
             text-decoration: none;
             display: block;
         }
 
         .dropdown-content a:hover {
-            background-color: #222;
+            background-color: #f1f1f1;
         }
+
+
+        /* Show the dropdown when the 'show' class is added */
+        .dropdown-content.show {
+            display: block;
+        }
+
+
+        /*-------------------------------------------------------*/
 
         .gallery-grid {
             display: grid;
@@ -285,16 +297,11 @@ session_start();
 
 <body onload="hideLoadingScreen()">
 <?php include "header2.php"; ?>
-<?php include "globe.php"; ?>
 <?php include "cursor.php"; ?>
 
 
 <?php include "loadingscreen.php"; ?>
 
-<hr>
-Session Variables:
-<?php var_dump($_SESSION) ?>
-<hr>
 
 <div class="containerx">
     <div class="welcometext">Welcome to your SafeCircle, <?php echo $_SESSION['fname'] ?>!
@@ -460,6 +467,39 @@ Session Variables:
 <!----------------------------------FRIENDS---------------------------------------->
     <h1 class="hptitle">Friends</h1>
     <div class="friends">
+        <?php
+        $host = "webdev.iyaserver.com";
+        $userid = "<youruserid>";
+        $userpw = "<yourpw>";
+        $db = "<database name>";
+
+        include 'loginvariables.php';
+
+        $mysql = new mysqli($host, $userid, $userpw, $db);
+
+        if ($mysql->connect_errno) {
+            echo "Database connection error: " . $mysql->connect_error;
+            exit();
+        }
+
+        $userid = $_SESSION['user_id'];
+
+        // Select name and profile from friends
+        $stmt = $mysql->prepare("SELECT f.friendship_id, f.user_id_1, f.user_id_2, CONCAT(u2.fname, ' ', u2.lname) AS user_2_name, u2.profile_picture FROM friends f JOIN users u1 ON f.user_id_1 = u1.user_id JOIN users u2 ON f.user_id_2 = u2.user_id WHERE f.status = 'Accepted' AND u1.user_id = ?;");
+        $stmt->bind_param("s", $userid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while($row = $result->fetch_assoc()) {
+            echo "<div class='gallery1'>
+            <div class='profile-container'>
+                <img src='images/profile_pics/" . $row['profile_picture'] .  "'alt='Friend' 1 class='profile-image'>
+                <div class='online-indicator'></div>
+            </div>
+            <div class='desc'>" . $row['user_2_name'] . "</div>
+        </div>";
+        }
+        ?>
 
         <div class="gallery1">
             <div class="profile-container">
@@ -565,12 +605,54 @@ Session Variables:
 
 
 </div>
+<!---------------------------------------------DROPDOWN SCRIPT----------------------------------------------------->
+<script>
+
+    let currentOpenDropdown = null;
+    function toggleDropdown(dropdownId) {
+        const dropdown = document.getElementById(dropdownId + 'Dropdown');
+
+        if (currentOpenDropdown && currentOpenDropdown !== dropdown) {
+            currentOpenDropdown.classList.remove('show');
+        }
+        dropdown.classList.toggle('show');
+        currentOpenDropdown = dropdown.classList.contains('show') ? dropdown : null;
+        event.stopPropagation();
+    }
+
+    document.addEventListener('click', function(event) {
+        if (!event.target.matches('.filter-btn')) {
+            if (currentOpenDropdown) {
+                currentOpenDropdown.classList.remove('show');
+                currentOpenDropdown = null;
+            }
+        }
+    });
+
+    document.querySelectorAll('.dropdown-content a').forEach(item => {
+        item.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const parentButton = this.closest('.filter-btn');
+            const buttonText = parentButton.childNodes[0];
+            const newText = this.textContent + ' ▼';
+            buttonText.textContent = newText;
+
+            if (currentOpenDropdown) {
+                currentOpenDropdown.classList.remove('show');
+                currentOpenDropdown = null;
+            }
+        });
+    });
+</script>
+<!---------------------------------------------DROPDOWN SCRIPT----------------------------------------------------->
 
 
 
 <footer>
     <p>SafeCircle &nbsp;|&nbsp; Los Angeles, California &nbsp;|&nbsp; 2024 All Rights Reserved</p>
 </footer>
+<?php include "globe.php"; ?>
 
 </body>
 </html>

@@ -106,6 +106,9 @@
         border-radius: 50%;
         background-color: #ffffff;
         cursor: pointer;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
     }
 
 
@@ -179,7 +182,7 @@
 
         <!--------------------------PROFILE PIC DROPDOWN----------------------------->
         <div class="profile-dropdown">
-            <div class="profile-icon2"></div>
+            <div class="profile-icon2" style="background-image: url('images/profile_pics/<?php echo $_SESSION['profile_picture']?>');"></div>
             <div class="dropdown-content">
                 <a href="">My Accounts</a>
                 <a href="">SafeCircles</a>

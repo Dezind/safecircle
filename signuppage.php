@@ -226,7 +226,7 @@ function show_form1($error = '') {
                 <hr style="margin-top:20px;margin-bottom:20px;">
                 <div class="form-group">
                     <label for="email" class="form-label">Email:</label>
-                    <input type="text" id="email" class="form-input" name="email" value="<?php echo $_SESSION['email'] ?>" readonly>
+                    <input type="text" id="email" class="form-input" name="email" value="<?php echo $_REQUEST['email']; ?>" readonly>
                 </div>
                 <div class="form-group">
                     <label for="password" class="form-label">Password:</label>
