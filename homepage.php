@@ -1,3 +1,7 @@
+<?php
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -285,8 +289,13 @@
 <?php include "cursor.php"; ?>
 <?php include "loadingscreen.php"; ?>
 
+<hr>
+Session Variables:
+<?php var_dump($_SESSION) ?>
+<hr>
+
 <div class="containerx">
-    <div class="welcometext">Welcome to your SafeCircle, Amy!
+    <div class="welcometext">Welcome to your SafeCircle, <?php echo $_SESSION['fname'] ?>!
 
         <br><br>
         <!--DOWN ARROW SCROLL BUTTON TEST-->

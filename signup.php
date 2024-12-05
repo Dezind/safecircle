@@ -46,7 +46,7 @@ if (isset($_FILES['profile-pic']) && $_FILES['profile-pic']['error'] == UPLOAD_E
     $profile_pic = "profile_pic_placeholder.jpg";
 }
 
-$insertsql = $mysql->prepare("INSERT INTO users(fname, lname, username, password, email, phone_number, instagram, major, profile_picture, bio) VALUES (?,?,?,?,?,?,?,?,?,?)");
+$insertsql = $mysql->prepare("INSERT INTO users(fname, lname, username, password, email, phone_number, instagram, major, profile_picture, bio, admin) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
 
 if (!$insertsql) {
     echo "SQL preparation error: " . $mysql->error;
@@ -62,10 +62,11 @@ $phone_number = $_REQUEST['phone-number'];
 $major = $_REQUEST['major'];
 $bio = $_REQUEST['bio'];
 $instagram = $_REQUEST['instagram'];
+$admin = "0";
 
 // Bind parameters to the placeholders
 $insertsql->bind_param(
-    "ssssssssss",
+    "ssssssssssi",
     $fname,
     $lname,
     $username,
@@ -75,7 +76,8 @@ $insertsql->bind_param(
     $instagram,
     $major,
     $profile_pic,
-    $bio
+    $bio,
+    $admin
 );
 
 // Execute the prepared statement

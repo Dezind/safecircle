@@ -1,4 +1,7 @@
 <?php
+session_start();
+
+
 $host = "webdev.iyaserver.com";
 $userid = "<youruserid>";
 $userpw = "<yourpw>";
@@ -21,6 +24,7 @@ if ($mysql->connect_errno) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
 
+
     // Check if the email exists in the database
     $stmt = $mysql->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
@@ -28,11 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Redirect to login page if the email exists
-        header("Location: loginpage.php?email=$email");
+        $_SESSION["email"] = $email;
+        header("Location: loginpage.php");
     } else {
-        // Redirect to signup page if the email does not exist
-        header("Location: signuppage.php?email=" . urlencode($email));
+        session_unset();
+        session_destroy();
+        header("Location: signuppage.php?email=$email");
     }
 
     $stmt->close();
@@ -63,9 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 </script>
-<?php
-
-?>
 
 <body>
 <?php include "globe.php"?>

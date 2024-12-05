@@ -1,4 +1,13 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+$id = $_SESSION['user_id'];
+$email = $_SESSION['email'];
 
 $host = "webdev.iyaserver.com";
 $userid = "<youruserid>";
@@ -20,8 +29,6 @@ if ($mysql->connect_errno) {
     exit();
 }
 
-$id = $_REQUEST['id'];
-
 $sql = "SELECT * FROM users WHERE user_id = '$id'";
 
 $results = $mysql->query($sql);
@@ -34,6 +41,27 @@ if ($results->num_rows > 0) {
     $row = $results->fetch_assoc();
     $fname = htmlspecialchars($row['fname']);
     $userid = $row['user_id'];
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Check if the email and password exist in the database
+    $stmt = $mysql->prepare("SELECT * FROM users WHERE user_id = '$id'");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        exit();
+    } else {
+        $error_message = "Somethings wrong";
+    }
+
+    $stmt->close();
+    $mysql->close();
 }
 ?>
 
@@ -48,6 +76,10 @@ if ($results->num_rows > 0) {
 </head>
 
 <body  onload="hideLoadingScreen()">
+<hr>
+Session Variables:
+<?php var_dump($_SESSION) ?>
+<hr>
 
 <?php include "loadingscreen.php"; ?>
 
