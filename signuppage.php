@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Send verification email
         $to = $email;
         $subject = 'Your verification code';
-        $message = 'Your code is ' . $correctcode . "copy and paste the verification code on sign up page.";
+        $message = 'Your code is ' . $correctcode;
         $headers = 'From: SafeCircle';
 
         mail($to, $subject, $message, $headers);
@@ -131,8 +131,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = $_SESSION['email'];
         $phone_number = $_SESSION['phone-number'];
         $major = $_SESSION['major'];
-        $bio = $bio;
-        $instagram = $instagram;
+        $bio = $_SESSION['bio'];
+        $instagram = $_SESSION['instagram'];
         $admin = "0";
 
         // Prepare and execute the SQL statement

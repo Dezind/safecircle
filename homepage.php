@@ -1,6 +1,26 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: emailcheckpage.php");
+    exit();
+}
+
+$host = "webdev.iyaserver.com";
+$userid = "<youruserid>";
+$userpw = "<yourpw>";
+$db = "<database name>";
+
+include 'loginvariables.php';
+
+$mysql = new mysqli($host, $userid, $userpw, $db);
+
+if ($mysql->connect_errno) {
+    echo "Database connection error: " . $mysql->connect_error;
+    exit();
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,290 +28,9 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" href="css/site.css" rel="stylesheet">
+    <link type="text/css" href="css/homepage.css" rel="stylesheet"
     <title>HOME PAGE - (purely placeholders)</title>
-        <style>
-        .containerx {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .headerx {
-            margin-bottom: 3rem;
-        }
-
-        .headerx h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .headerx p {
-            color: #888;
-        }
-
-        .share-btn {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 0.3rem 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        /*---------------------------<New CSS>----------------------------*/
-
-        .filtersx {
-            position: relative;
-            display: flex;
-            gap: 10px;
-        }
-
-        .filter-btn {
-            position: relative;
-            cursor: pointer;
-            background: transparent;
-            color: #fff;
-            border: 1px solid #fff;
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
-        }
-
-        .filter-btn:hover {
-            background: #fff;
-            color: #000;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-
-        /* Show the dropdown when the 'show' class is added */
-        .dropdown-content.show {
-            display: block;
-        }
-
-
-        /*-------------------------------------------------------*/
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .gallery-card {
-            background: #111;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-
-        .gallery-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .gallery-image {
-            width: 100%;
-            height: 380px;
-            object-fit: cover;
-        }
-
-        .gallery-details {
-            padding: 1.5rem;
-        }
-
-        .gallery-caption {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #fff;
-        }
-
-        .gallery-description {
-            color: #888;
-            margin-bottom: 1rem;
-            line-height: 1.4;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .share-btn, .download-btn {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .share-btn:hover, .download-btn:hover {
-            background: #ddd;
-        }
-
-        .show {
-            display: block;
-        }
-
-        .hptitle {
-            text-align: left;
-            font-size: 2rem;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-
-        .welcometext {
-            font-size: 3.5rem;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 350px;
-            margin-bottom: 130px;
-        }
-
-        /*------------------- friend photos ------------------*/
-        .friends {
-            clear: both;
-            padding-top: 2rem;
-            width: 100%;
-            display: flex;
-            justify-content: left;
-            gap: 20px;
-        }
-
-        div.gallery1 {
-            margin: 5px;
-            width: 150px;
-            text-align: center;
-            float: none;
-            border: none;
-        }
-
-        div.gallery1 .profile-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 10px;
-            transition: transform 0.3s ease
-        }
-        div.gallery1 .profile-image:hover {
-            transform: translateY(-5px);
-        }
-
-        div.gallery1 .online-indicator {
-            width: 12px;
-            height: 12px;
-            background-color: #2ecc71;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-        }
-
-        div.gallery1 .profile-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        div.desc {
-            padding: 5px;
-            text-align: center;
-            font-size: 1.1rem;
-            color: #fff;
-            border: none;
-        }
-
-        /*----------------------your safecircle panels----------------------------*/
-        .event-gallery1 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 20px 0;
-        }
-
-        .event-card1 {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            aspect-ratio: 1;
-            transition: transform 0.3s ease
-        }
-        .event-card1:hover {
-            transform: translateY(-5px);
-        }
-
-        .event-image1 {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-
-        .event-title-wrapper1 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-        }
-
-        .event-title1 {
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
-        .comment-icon1 {
-            width: 24px;
-            height: 24px;
-            opacity: 0.9;
-        }
-
-        #jumptopoint {
-
-        }
-
-
-    </style>
+        <style></style>
 </head>
 
 
@@ -319,6 +58,20 @@ session_start();
             <button class="filter-btn" onclick="toggleDropdown('eventType')">
                 EVENT TYPE ▼
                 <div id="eventTypeDropdown" class="dropdown-content">
+                    <?php
+                    $sql = "SELECT * FROM event_types";
+
+                    $results = $mysql->query($sql);
+
+                    if(!$results) {
+                        echo "SQL error: ". $mysql->error . " running query <hr>" . $sql . "<hr>";
+                        exit();
+                    }
+
+                    while($currentrow = $results->fetch_assoc()){
+                        echo "<option value='" . $currentrow['event_type'] . "'>" . $currentrow['event_type'] . "</option>";
+                    }
+                    ?>
                     <a href="#">Music</a>
                     <a href="#">Art</a>
                     <a href="#">Sports</a>
@@ -361,19 +114,94 @@ session_start();
     <div class="hptitle" >Recommended for You</div>
     <br>
 
+
+    <?php
+    // Ensure that $mysql is an active MySQLi connection.
+    // Example:
+    // $mysql = new mysqli("localhost", "username", "password", "database");
+    // if($mysql->connect_error) {
+    //     die("Connection failed: " . $mysql->connect_error);
+    // }
+
+    // Determine the 'start' index, defaulting to 1 if not provided
+    $start = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 1;
+    $end = $start + 3;
+    $counter = 1;
+
+    $sql1 = "SELECT * FROM eventview WHERE event_date >= CURRENT_DATE()";
+    $results1 = $mysql->query($sql1);
+
+    if(!$results1) {
+        echo "SQL error: ". htmlspecialchars($mysql->error) . " running query <hr>" . htmlspecialchars($sql1) . "<hr>";
+        exit();
+    }
+    ?>
+
     <div class="gallery-container clearfix">
         <div class="gallery-grid">
+            <?php while($currentrow = $results1->fetch_assoc()): ?>
+                <?php if($counter >= $start && $counter <= $end): ?>
+                    <div class="gallery-card">
+                        <img src="images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
+                        <div class="gallery-details">
+                            <h3 class="gallery-caption"><?php echo htmlspecialchars($currentrow['event_name']); ?></h3>
+                            <p class="gallery-description">
+                                <?php echo date('D, M j', strtotime($currentrow['event_date'])); ?> •
+                                <?php echo date('g:ia', strtotime($currentrow['start_time'])); ?>
+                            </p>
+                            <div class="button-group">
+                                <button class="share-btn">Share</button>
+                                <button class="download-btn">RSVP</button>
+                            </div>
+                        </div> <!-- /.gallery-details -->
+                    </div> <!-- /.gallery-card -->
+                <?php endif; ?>
+
+                <?php
+                // Increment the counter after each row
+                $counter++;
+
+                // If we've printed all the events we need, break out of the loop
+                if($counter > $end) {
+                    break;
+                }
+                ?>
+            <?php endwhile; ?>
+        </div>
+    </div>
+
+    <?php
+    // Optionally, you could add pagination controls here.
+    // For example:
+    // echo '<a href="?start='.($start-5).'">Previous</a> | <a href="?start='.($start+5).'">Next</a>';
+    ?>
+
+
+
+    <div class="gallery-container clearfix">
+        <div class="gallery-grid">
+
             <div class="gallery-card">
+
                 <img src="images/homepagephotos/homep1.png" alt="Event 1" class="gallery-image">
+
                 <div class="gallery-details">
+
                     <h3 class="gallery-caption">Event #1</h3>
                     <p class="gallery-description">Event #1 Description</p>
+
                     <div class="button-group">
                         <button class="share-btn">Share</button>
                         <button class="download-btn">RSVP</button>
                     </div>
+
                 </div>
+
             </div>
+
+
+
+
             <div class="gallery-card">
                 <img src="images/homepagephotos/homep2.png" alt="Event 2" class="gallery-image">
                 <div class="gallery-details">
@@ -468,23 +296,8 @@ session_start();
     <h1 class="hptitle">Friends</h1>
     <div class="friends">
         <?php
-        $host = "webdev.iyaserver.com";
-        $userid = "<youruserid>";
-        $userpw = "<yourpw>";
-        $db = "<database name>";
-
-        include 'loginvariables.php';
-
-        $mysql = new mysqli($host, $userid, $userpw, $db);
-
-        if ($mysql->connect_errno) {
-            echo "Database connection error: " . $mysql->connect_error;
-            exit();
-        }
-
         $userid = $_SESSION['user_id'];
 
-        // Select name and profile from friends
         $stmt = $mysql->prepare("SELECT f.friendship_id, f.user_id_1, f.user_id_2, CONCAT(u2.fname, ' ', u2.lname) AS user_2_name, u2.profile_picture FROM friends f JOIN users u1 ON f.user_id_1 = u1.user_id JOIN users u2 ON f.user_id_2 = u2.user_id WHERE f.status = 'Accepted' AND u1.user_id = ?;");
         $stmt->bind_param("s", $userid);
         $stmt->execute();
@@ -493,66 +306,14 @@ session_start();
         while($row = $result->fetch_assoc()) {
             echo "<div class='gallery1'>
             <div class='profile-container'>
-                <img src='images/profile_pics/" . $row['profile_picture'] .  "'alt='Friend' 1 class='profile-image'>
+                <img src='images/profile_pics/" . $row['profile_picture'] .  "' class='profile-image'>
                 <div class='online-indicator'></div>
             </div>
             <div class='desc'>" . $row['user_2_name'] . "</div>
         </div>";
         }
+
         ?>
-
-        <div class="gallery1">
-            <div class="profile-container">
-                <img src="images/homepagephotos/friend1.png" alt="Friend 1" class="profile-image">
-                <div class="online-indicator"></div>
-            </div>
-            <div class="desc">Amy Pan</div>
-        </div>
-
-        <div class="gallery1">
-            <div class="profile-container">
-                <img src="images/homepagephotos/friend2.png" alt="Friend 2" class="profile-image">
-                <div class="online-indicator"></div>
-            </div>
-            <div class="desc">Amy Pan</div>
-        </div>
-
-        <div class="gallery1">
-            <div class="profile-container">
-                <img src="images/homepagephotos/friend3.png" alt="Friend 3" class="profile-image">
-                <div class="online-indicator"></div>
-            </div>
-            <div class="desc">Amy Pan</div>
-        </div>
-
-        <div class="gallery1">
-            <div class="profile-container">
-                <img src="images/homepagephotos/friend4.png" alt="Friend 4" class="profile-image">
-                <div class="online-indicator"></div>
-            </div>
-            <div class="desc">Amy Pan</div>
-        </div>
-
-        <div class="gallery1">
-            <div class="profile-container">
-                <img src="images/homepagephotos/friend5.png" alt="Friend 5" class="profile-image">
-                <!--
-                <div class="online-indicator"></div>
-                --->
-            </div>
-            <div class="desc">Amy Pan</div>
-        </div>
-
-        <div class="gallery1">
-            <div class="profile-container">
-                <img src="images/homepagephotos/friend6.png" alt="Friend 6" class="profile-image">
-                <!--x
-                <div class="online-indicator"></div>
-                -->
-            </div>
-            <div class="desc">Amy Pan</div>
-        </div>
-
     </div>
 
     <!--------------------------------Your Safecircles-------------------------------------->

@@ -1,0 +1,279 @@
+.containerx {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.headerx {
+    margin-bottom: 3rem;
+}
+
+.headerx h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.headerx p {
+    color: #888;
+}
+
+.share-btn {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 0.3rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/*---------------------------<New CSS>----------------------------*/
+
+.filtersx {
+    position: relative;
+    display: flex;
+    gap: 10px;
+}
+
+.filter-btn {
+    position: relative;
+    cursor: pointer;
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+}
+
+.filter-btn:hover {
+    background: #fff;
+    color: #000;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* Show the dropdown when the 'show' class is added */
+.dropdown-content.show {
+    display: block;
+}
+
+
+/*-------------------------------------------------------*/
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.gallery-card {
+    background: #111;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.gallery-card:hover {
+    transform: translateY(-5px);
+}
+
+.gallery-image {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+}
+
+.gallery-details {
+    padding: 1.5rem;
+}
+
+.gallery-caption {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.gallery-description {
+    color: #888;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-btn, .download-btn {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.share-btn:hover, .download-btn:hover {
+    background: #ddd;
+}
+
+.show {
+    display: block;
+}
+
+.hptitle {
+    text-align: left;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.welcometext {
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 350px;
+    margin-bottom: 130px;
+}
+
+/*------------------- friend photos ------------------*/
+.friends {
+    clear: both;
+    padding-top: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    gap: 20px;
+}
+
+div.gallery1 {
+    margin: 5px;
+    width: 150px;
+    text-align: center;
+    float: none;
+    border: none;
+}
+
+div.gallery1 .profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease
+}
+div.gallery1 .profile-image:hover {
+    transform: translateY(-5px);
+}
+
+div.gallery1 .online-indicator {
+    width: 12px;
+    height: 12px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+div.gallery1 .profile-container {
+    position: relative;
+    display: inline-block;
+}
+
+div.desc {
+    padding: 5px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #fff;
+    border: none;
+}
+
+/*----------------------your safecircle panels----------------------------*/
+.event-gallery1 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.event-card1 {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    transition: transform 0.3s ease
+}
+.event-card1:hover {
+    transform: translateY(-5px);
+}
+
+.event-image1 {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.event-title-wrapper1 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+.event-title1 {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.comment-icon1 {
+    width: 24px;
+    height: 24px;
+    opacity: 0.9;
+}
+
+#jumptopoint {
+
+}
