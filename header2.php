@@ -122,6 +122,7 @@
         border-radius: 10px;
         z-index: 1001;
         margin-top:20px;
+        margin-left: -110px;
     }
 
     .dropdown-content a {
