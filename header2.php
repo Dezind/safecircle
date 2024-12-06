@@ -188,7 +188,7 @@
                 <a href="">My Accounts</a>
                 <a href="">SafeCircles</a>
                 <a href="">Upgrade Plan</a>
-                <a href=""><!---- <PUT LINK IN HERE> ---->Logout</a>
+                <a onclick="window.location.href='index.php'">Logout</a>
             </div>
         </div>
     </div>
