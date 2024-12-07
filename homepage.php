@@ -30,8 +30,17 @@ if ($mysql->connect_errno) {
     <link type="text/css" href="css/site.css" rel="stylesheet">
     <link type="text/css" href="css/homepage.css" rel="stylesheet"
     <title>HOME PAGE - (purely placeholders)</title>
-        <style></style>
+    <style></style>
 </head>
+<script>
+    function setFilter(key, value) {
+        // Get current query parameters
+        const url = new URL(window.location.href);
+        url.searchParams.set(key, value); // set or update the filter param
+        window.location.href = url.toString(); // reload page with new params
+    }
+
+</script>
 
 
 <body onload="hideLoadingScreen()">
@@ -51,6 +60,18 @@ if ($mysql->connect_errno) {
 
     </div>
 
+    <?php
+    $sql = "SELECT * FROM event_types";
+
+    $results = $mysql->query($sql);
+
+    if(!$results) {
+        echo "SQL error: ". $mysql->error . " running query <hr>" . $sql . "<hr>";
+        exit();
+    }
+    ?>
+
+
     <div class="headerx">
         <h1 class="hptitle" id="jumptopoint">Event Suggestions</h1>
         <br>
@@ -58,51 +79,27 @@ if ($mysql->connect_errno) {
             <button class="filter-btn" onclick="toggleDropdown('eventType')">
                 EVENT TYPE ▼
                 <div id="eventTypeDropdown" class="dropdown-content">
-                    <?php
-                    $sql = "SELECT * FROM event_types";
-
-                    $results = $mysql->query($sql);
-
-                    if(!$results) {
-                        echo "SQL error: ". $mysql->error . " running query <hr>" . $sql . "<hr>";
-                        exit();
-                    }
-
-                    while($currentrow = $results->fetch_assoc()){
-                        echo "<option value='" . $currentrow['event_type'] . "'>" . $currentrow['event_type'] . "</option>";
-                    }
-                    ?>
-                    <a href="#">Music</a>
-                    <a href="#">Art</a>
-                    <a href="#">Sports</a>
-                    <a href="#">Food</a>
+                    <?php while($currentrow = $results->fetch_assoc()): ?>
+                        <a href="#" onclick="setFilter('event_type', '<?php echo $currentrow['event_type'] ?>')"><?php echo $currentrow['event_type'] ?></a>
+                    <?php endwhile; ?>
+                    <a href="#" onclick="setFilter('event_type', 'all')">Today</a>
                 </div>
             </button>
             <button class="filter-btn" onclick="toggleDropdown('date')">
                 DATE ▼
                 <div id="dateDropdown" class="dropdown-content">
-                    <a href="#">Today</a>
-                    <a href="#">This Week</a>
-                    <a href="#">This Month</a>
-                    <a href="#">All</a>
+                    <a href="#" onclick="setFilter('event_date', 'today')">Today</a>
+                    <a href="#" onclick="setFilter('event_date', 'this_week')">This Week</a>
+                    <a href="#" onclick="setFilter('event_date', 'this_month')">This Month</a>
+                    <a href="#" onclick="setFilter('event_date', 'all')">All</a>
                 </div>
             </button>
             <button class="filter-btn" onclick="toggleDropdown('location')">
                 LOCATION ▼
                 <div id="locationDropdown" class="dropdown-content">
-                    <a href="#">Near Me</a>
-                    <a href="#">Downtown</a>
-                    <a href="#">Suburbs</a>
-                    <a href="#">All</a>
-                </div>
-            </button>
-            <button class="filter-btn" onclick="toggleDropdown('price')">
-                PRICE ▼
-                <div id="priceDropdown" class="dropdown-content">
-                    <a href="#">Free</a>
-                    <a href="#">Under $50</a>
-                    <a href="#">Under $100</a>
-                    <a href="#">All</a>
+                    <a href="#" onclick="setFilter('oncampus', 'oncampus')">On Campus</a>
+                    <a href="#" onclick="setFilter('oncampus', 'downtown')">Downtown</a>
+                    <a href="#" onclick="setFilter('oncampus', 'all')">All</a>
                 </div>
             </button>
         </div>
@@ -129,12 +126,62 @@ if ($mysql->connect_errno) {
     $counter = 1;
 
     $sql1 = "SELECT * FROM eventview WHERE event_date >= CURRENT_DATE()";
+
+    if (!empty($_GET['event_type']) && $_GET['event_date'] !== 'all') {
+        $eventType = $_GET['event_type'];
+        $sql1 .= " AND event_type = '$eventType'";
+    } else {
+        $sql1 .= "";
+    }
+
+    if (!empty($_GET['event_date'])) {
+        $date = $_GET['event_date'];
+
+
+        // Determine which filter to apply.
+        if ($date === 'today') {
+            // Filter for events that have today's date
+            $sql1 .= " AND event_date = CURDATE()";
+        } elseif ($date === 'this_week') {
+            // Filter for events in the current week.
+            // YEARWEEK() returns the year and week number;
+            // using YEARWEEK with CURDATE() isolates the current week's events.
+            $sql1 .= " AND YEARWEEK(event_date, 1) = YEARWEEK(CURDATE(), 1)";
+        } elseif ($date === 'this_month') {
+            // Filter for events occurring in the current month.
+            $sql1 .= " AND MONTH(event_date) = MONTH(CURDATE()) AND YEAR(event_date) = YEAR(CURDATE())";
+        } elseif ($date !== 'all') {
+            // If $date is presumably a specific date in YYYY-MM-DD format, filter by that exact date.
+            $sql1 .= "";
+        }
+    }
+
+    if (!empty($_GET['oncampus'])) {
+        $oncampus = $_GET['oncampus'];
+
+
+        // Determine which filter to apply.
+        if ($oncampus === 'oncampus') {
+            // Filter for events that have today's date
+            $sql1 .= " AND oncampus = '1'";
+        } elseif ($oncampus === 'downtown') {
+            $sql1 .= " AND oncampus = '0'";
+        } elseif ($oncampus === 'all') {
+            $sql1 .= "";
+        }
+    }
+
     $results1 = $mysql->query($sql1);
+
+    if($results1 < 1) {
+        echo "<div class='hptitle' >No Results</div>";
+    }
 
     if(!$results1) {
         echo "SQL error: ". htmlspecialchars($mysql->error) . " running query <hr>" . htmlspecialchars($sql1) . "<hr>";
         exit();
     }
+
     ?>
 
     <div class="gallery-container clearfix">
@@ -171,72 +218,9 @@ if ($mysql->connect_errno) {
     </div>
 
     <?php
-    // Optionally, you could add pagination controls here.
-    // For example:
-    // echo '<a href="?start='.($start-5).'">Previous</a> | <a href="?start='.($start+5).'">Next</a>';
+    echo '<a href="?start='.($start-5).'">Previous</a> | <a href="?start='.($start+5).'">Next</a>';
     ?>
 
-
-
-    <div class="gallery-container clearfix">
-        <div class="gallery-grid">
-
-            <div class="gallery-card">
-
-                <img src="images/homepagephotos/homep1.png" alt="Event 1" class="gallery-image">
-
-                <div class="gallery-details">
-
-                    <h3 class="gallery-caption">Event #1</h3>
-                    <p class="gallery-description">Event #1 Description</p>
-
-                    <div class="button-group">
-                        <button class="share-btn">Share</button>
-                        <button class="download-btn">RSVP</button>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-
-            <div class="gallery-card">
-                <img src="images/homepagephotos/homep2.png" alt="Event 2" class="gallery-image">
-                <div class="gallery-details">
-                    <h3 class="gallery-caption">Event #2</h3>
-                    <p class="gallery-description">Event #2 Description</p>
-                    <div class="button-group">
-                        <button class="share-btn">Share</button>
-                        <button class="download-btn">RSVP</button>
-                    </div>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <img src="images/homepagephotos/homep3.png" alt="Event 3" class="gallery-image">
-                <div class="gallery-details">
-                    <h3 class="gallery-caption">Event #3</h3>
-                    <p class="gallery-description">Event #3 Description</p>
-                    <div class="button-group">
-                        <button class="share-btn">Share</button>
-                        <button class="download-btn">RSVP</button>
-                    </div>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <img src="images/homepagephotos/homep4.png" alt="Event 4" class="gallery-image">
-                <div class="gallery-details">
-                    <h3 class="gallery-caption">Event #4</h3>
-                    <p class="gallery-description">Event #4 Description</p>
-                    <div class="button-group">
-                        <button class="share-btn">Share</button>
-                        <button class="download-btn">RSVP</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-----------------------------------Featured Events-------------------------------->
 
@@ -292,7 +276,7 @@ if ($mysql->connect_errno) {
         </div>
     </div>
 
-<!----------------------------------FRIENDS---------------------------------------->
+    <!----------------------------------FRIENDS---------------------------------------->
     <h1 class="hptitle">Friends</h1>
     <div class="friends">
         <?php

@@ -92,8 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Handle Form 3 Submission
     if (isset($_POST['form3_submitted'])) {
         // Retrieve Form 3 data
-        $bio = $_POST['bio'];
-        $instagram = $_POST['instagram'];
+        $_SESSION['bio'] = $_POST['bio'];
+        $_SESSION['instagram'] = $_POST['instagram'];
 
         // Handle file upload
         if (isset($_FILES['profile-pic']) && $_FILES['profile-pic']['error'] == UPLOAD_ERR_OK) {
@@ -274,8 +274,9 @@ function show_verification_form($error = '') {
                 <?php if ($error) echo '<p style="color:red;">' . $error . '</p>'; ?>
                 <hr style="margin-top:20px;margin-bottom:20px;">
                 <div class="form-group">
-                    <label for="verification_code" class="form-label">Enter Verification Code:</label>
-                    <input type="text" id="verification_code" class="form-input" name="verification_code" required>
+                    <label for="verification_code" class="form-label">Verification Code sent to <?php echo $_SESSION['email']; ?></label>
+                    <input type="text" id="verification_code" class="form-input" name="verification_code" placeholder="copy & paste 4 character code" required>
+                    <label for="verification_code" class="form-label">(Check spam folder)</label>
                 </div>
                 <input type="hidden" name="verification_submitted" value="1">
                 <button class="auth-button" type="submit">Verify</button>
