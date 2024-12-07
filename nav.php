@@ -1,4 +1,5 @@
 <header>
+
     <!------logo------->
     <a href="home.php">
         <img src="images/safecirclelogo1.png" alt="safecircle Logo placeholder" >

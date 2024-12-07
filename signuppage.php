@@ -208,6 +208,15 @@ function show_form1($error = '') {
     <!DOCTYPE html>
     <html lang="en">
     <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-E5TVCZMWYR"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-E5TVCZMWYR');
+        </script>
         <!-- ... head content ... -->
         <title>SIGN UP - Step 1</title>
         <link type="text/css" href="css/site.css" rel="stylesheet">
