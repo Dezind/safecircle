@@ -19,23 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E5TVCZMWYR"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-E5TVCZMWYR');
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customization 7</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: black;
             color: white;
-            font-family: Arial, sans-serif;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -49,6 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 10px;
             width: 360px;
             box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 0.05);
         }
 
         .quiz-container form {
@@ -58,13 +52,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .quiz-container h2 {
-            font-size: 1em;
+            font-size: 1.2rem;
             margin: 0 0 10px 0;
             text-align: left;
+            color: white;
         }
 
         label {
-            font-size: 1em;
+            font-size: 1rem;
             margin: 0;
             text-align: left;
         }
@@ -121,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="interest-inputs-container">
                 <div class="interest-inputs">
                     <label for="interests-input">Please enter your interests:</label>
-                    <input type="text" name="interests[]" placeholder="Enter an interest" onblur="addInterestInput(this)">
+                    <input type="text" name="interests[]" placeholder="Enter an interest" onblur="addInterestInput(this)" required>
                 </div>
             </div>
 
