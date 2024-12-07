@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['transportation-amount'] = $transportationAmount;
     $_SESSION['transportation-type'] = $transportationType;
 
-    // Redirect to the next page (e.g., customization5.php or a final page)
+    // Redirect to the next page (e.g., customization5.php)
     header("Location: customization5.php");
     exit;
 }
@@ -20,23 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E5TVCZMWYR"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-E5TVCZMWYR');
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customization 4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: black;
             color: white;
-            font-family: Arial, sans-serif;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -50,6 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 10px;
             width: 360px;
             box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 0.05);
         }
 
         .quiz-container form {
@@ -59,15 +53,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .quiz-container h2 {
-            font-size: 1em;
+            font-size: 1.2rem;
             margin: 0 0 10px 0;
             text-align: left;
+            color: white;
         }
 
         label {
-            font-size: 1em;
-            margin: 0;
-            text-align: left;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            margin-bottom: 10px; /* Increased space between each label */
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+        }
+
+        input[type="radio"]:checked::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            border-radius: 50%;
         }
 
         input[type="range"] {
@@ -75,12 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin: 10px 0;
         }
 
-        input[type="radio"] {
-            margin: 0;
-            transform: scale(1.2);
-        }
-
-        /* Style for the buttons container */
         .button-container {
             display: flex;
             justify-content: space-between;
@@ -93,8 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
-            width: 48%; /* Ensures buttons are side by side */
+            font-size: 1rem;
+            width: 48%;
         }
 
         button:hover {
