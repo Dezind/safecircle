@@ -684,8 +684,66 @@ input[type="date"] {
 
 .results {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 50px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 25px;
+    margin-bottom: 20px;
+    margin-left: -20px;
+    margin-right: auto;
+    max-width: 1200px;
+}
+
+.rounded-button {
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    z-index: 998;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.rounded-button:hover {
+    border-color: white;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 30px rgba(255, 255, 255, 0.3),
+    0 0 40px rgba(255, 255, 255, 0.2);
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.1);
+    animation: glow 1.5s ease-in-out infinite;
+}
+
+.rounded-button:active {
+    transform: scale(0.98);
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.5),
+        0 0 35px rgba(255, 255, 255, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+}
+
+.rounded-button:hover {
+    animation: glow 1.5s ease-in-out infinite;
+}
+
+.search-bar-container {
+    margin: 0 auto;
+    max-width: 1200px;
 }
 
 .btn {
@@ -834,6 +892,93 @@ body.results-page .results {
     gap: 110px;
     width: 100%;
     padding-right: 20px;
+
+}
+
+.pagination {
+    clear: both;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+
+
+}
+
+.rounded-button {
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    z-index: 998;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.rounded-button:hover {
+    border-color: white;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 30px rgba(255, 255, 255, 0.3),
+    0 0 40px rgba(255, 255, 255, 0.2);
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.1);
+    animation: glow 1.5s ease-in-out infinite;
+}
+
+.rounded-button:active {
+    transform: scale(0.98);
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.5),
+        0 0 35px rgba(255, 255, 255, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+}
+
+.rounded-button:hover {
+    animation: glow 1.5s ease-in-out infinite;
+}
+
+.pagination-info {
+    text-align: center;
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    margin: 10px 0;
+    pointer-events: none;
 }
 
 

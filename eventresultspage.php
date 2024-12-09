@@ -15,6 +15,71 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link type="text/css" href="css/site.css" rel="stylesheet">
     <title>Event Search Results</title>
+    <style>
+        .results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            margin-left: -20px;
+            margin-right: auto;
+            max-width: 1200px;
+        }
+
+        .rounded-button {
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            z-index: 998;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .rounded-button:hover {
+            border-color: white;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+            0 0 30px rgba(255, 255, 255, 0.3),
+            0 0 40px rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.1);
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        .rounded-button:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(255, 255, 255, 0.5),
+                0 0 35px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        .rounded-button:hover {
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        .search-bar-container {
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+    </style>
 </head>
 
 <?php
@@ -61,20 +126,12 @@ $date = $_REQUEST['date'] ?? '';
             <input type="text"
                    name="eventname"
                    placeholder=" Find an event"
-                   style="width: 100%;
-                          text-align: left;
-                          padding: 8px 0;
-                          padding-left: 0;"
+                   style="width: 100%; text-align: left; padding: 8px 0; padding-left: 0;"
                    value="<?php echo htmlspecialchars($eventname); ?>">
 
             <!-- Select -->
             <select name="category"
-                    style="width: 100%;
-                           margin: 0;
-                           text-align: left;
-                           padding: 8px 0;
-                           padding-left: 0;
-                           color: white;">
+                    style="width: 100%; margin: 0; text-align: left; padding: 8px 0; padding-left: 0; color: white;">
                 <option value="All">Select Category</option>
                 <?php
                 while($currentrow = $results->fetch_assoc()){
@@ -86,10 +143,7 @@ $date = $_REQUEST['date'] ?? '';
 
             <!-- Campus filter -->
             <div class="campus-filter"
-                 style="width: 100%;
-                        justify-content: space-between;
-                        padding: 8px 0;
-                        padding-left: 0;">
+                 style="width: 100%; justify-content: space-between; padding: 8px 0; padding-left: 0;">
                 <span style="text-align: left; margin-left: 2px; font-family: 'Helvetica Neue', serif;">On-Campus Only</span>
                 <label class="switch">
                     <input type="checkbox" name="toggle" <?php echo isset($_REQUEST['toggle']) && $_REQUEST['toggle'] == "on" ? 'checked' : ''; ?>>
@@ -99,15 +153,11 @@ $date = $_REQUEST['date'] ?? '';
 
             <!-- Date input -->
             <div class="date-input-container"
-                 style="width: 100%;
-                        padding: 8px 0;
-                        padding-left: 2px;">
+                 style="width: 100%; padding: 8px 0; padding-left: 2px;">
                 <input type="date"
                        name="date"
                        id="dateInput"
-                       style="width: 100%;
-                              text-align: left;
-                              padding-left: 0;"
+                       style="width: 100%; text-align: left; padding-left: 0;"
                        value="<?php echo htmlspecialchars($date); ?>"
                        placeholder="mm/dd/yyyy">
                 <button type="button"
@@ -120,35 +170,32 @@ $date = $_REQUEST['date'] ?? '';
             </div>
 
             <!-- Search button -->
-            <button type="submit"
-                    value="submit"
-                    class="search-button"
-                    style="align-self: center;">
+            <button type="submit" value="submit" class="search-button" style="align-self: center;">
                 <svg class="svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 18 18 l -5 -5 m 2 -4 a 6 6 0 1 1 -12 0 a 6 6 0 0 1 12 0 Z"></path>
                 </svg>
             </button>
         </form>
-
     </div>
+
     <div class="filter-toggle">
         <svg width="27" height="80" viewBox="0 0 30 80" xmlns="http://www.w3.org/2000/svg" class="arrow-svg">
             <path d="M10 20 L20 40 L10 60" />
         </svg>
     </div>
 
-    <!-- Results Grid -->
 
-    <div class="results">
+
+    <div class="search-bar-container">
         <?php
         $sql1 = "SELECT * FROM eventview WHERE 1=1";
 
         if($eventname != "") {
-            $sql1 .= " AND event_name LIKE '%" . $eventname . "%'";
+            $sql1 .= " AND event_name LIKE '%" . $mysql->real_escape_string($eventname) . "%'";
         }
 
         if($category != "All") {
-            $sql1 .= " AND event_type ='" . $category . "'";
+            $sql1 .= " AND event_type ='" . $mysql->real_escape_string($category) . "'";
         }
 
         if (isset($_REQUEST['toggle']) && $_REQUEST['toggle'] == "on") {
@@ -156,7 +203,7 @@ $date = $_REQUEST['date'] ?? '';
         }
 
         if ($date != "") {
-            $sql1 .= " AND event_date = '" . $date . "'";
+            $sql1 .= " AND event_date = '" . $mysql->real_escape_string($date) . "'";
         }
 
         $results1 = $mysql->query($sql1);
@@ -166,9 +213,75 @@ $date = $_REQUEST['date'] ?? '';
             exit();
         }
 
-        while($currentrow = $results1->fetch_assoc()): ?>
-            <?php include 'event_tile.php'?>
-        <?php endwhile; ?>
+        // Pagination logic
+        $total_results = $results1->num_rows;
+        $resultsPerPage = 6;
+        $total_pages = ceil($total_results / $resultsPerPage);
+        $current_page = isset($_REQUEST['page']) ? max(1, intval($_REQUEST['page'])) : 1;
+        $start = ($current_page - 1) * $resultsPerPage + 1;
+        $end = min($start + ($resultsPerPage - 1), $total_results);
+        ?>
+
+        <!-- Results Count Display -->
+        <div style="color: white; margin-left: -70px; font-family: 'Outfit', sans-serif; font-size: 16px; white-space: nowrap;">
+            <?php echo ($total_results > 0) ? "Showing " . $total_results . " matching results" : "No results found"; ?>
+        </div>
+
+
+        <!-- Results Grid -->
+        <div class="results">
+            <?php
+            $results1->data_seek($start - 1);
+            $counter = $start;
+
+            while($currentrow = $results1->fetch_assoc()) {
+                if($counter > $end) {
+                    break;
+                }
+                include 'event_tile.php';
+                $counter++;
+            }
+
+            // Build search string for pagination
+            $searchstring = "&eventname=" . urlencode($eventname) .
+                "&category=" . urlencode($category) .
+                "&date=" . urlencode($date);
+            if (isset($_REQUEST['toggle'])) {
+                $searchstring .= "&toggle=" . $_REQUEST['toggle'];
+            }
+            ?>
+        </div>
+
+        <!-- Pagination Controls -->
+        <?php if ($total_results > 0): ?>
+            <div style="padding: 0 20px 20px 20px; max-width: 1200px; margin: 0 auto;">
+                <div style="float: left; margin-left: -90px;">
+                    <?php if ($current_page > 1): ?>
+                        <a href="?page=<?php echo ($current_page - 1) . $searchstring; ?>" class="rounded-button">Previous</a>
+                    <?php endif; ?>
+                </div>
+                <div style="float: right;">
+                    <?php if ($current_page < $total_pages): ?>
+                        <a href="?page=<?php echo ($current_page + 1) . $searchstring; ?>" class="rounded-button">Next</a>
+                    <?php endif; ?>
+                </div>
+                <div style="clear: both;"></div>
+
+                <!-- Pagination Dots -->
+                <div style="display: flex; justify-content: center; gap: 8px; margin: -20px 0; margin-left: -120px;">
+                    <?php for($i = 1; $i <= $total_pages; $i++): ?>
+                        <div style="
+                                height: 8px;
+                                width: 8px;
+                                border-radius: 50%;
+                                background-color: <?php echo $i === $current_page ? '#ffffff' : 'rgba(255, 255, 255, 0.5)'; ?>;
+                                transition: all 0.3s ease;
+                                "></div>
+                    <?php endfor; ?>
+                </div>
+            </div>
+
+        <?php endif; ?>
     </div>
 </div>
 
@@ -216,26 +329,22 @@ $date = $_REQUEST['date'] ?? '';
         }
     }
 
+    // Filter panel toggle
     document.addEventListener('DOMContentLoaded', function () {
         const filterPanel = document.querySelector('.filter-panel');
         const filterToggle = document.querySelector('.filter-toggle');
 
         filterToggle.addEventListener('click', function () {
-            // Toggle the 'expanded' class on the filter panel
             filterPanel.classList.toggle('expanded');
-
-            // Adjust the toggle position based on panel state
             if (filterPanel.classList.contains('expanded')) {
                 filterToggle.style.left = '100px';
             } else {
-                filterToggle.style.left = '19px'; // Adjust to match the collapsed panel position
+                filterToggle.style.left = '19px';
             }
         });
     });
-
 </script>
 
 <?php include "footer.php"; ?>
 </body>
-
 </html>
