@@ -20,30 +20,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E5TVCZMWYR"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-E5TVCZMWYR');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customization 4</title>
+    <title>Customization</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: black;
-            color: white;
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #000000;
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            text-align: center;
         }
 
         .quiz-container {
-            background-color: #333;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 40px 30px;
             border-radius: 10px;
             width: 360px;
             box-sizing: border-box;
             backdrop-filter: blur(10px);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1),
+                        0 0 20px rgba(255, 255, 255, 0.05);
         }
 
         .quiz-container form {
@@ -53,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .quiz-container h2 {
-            font-size: 1.2rem;
+            font-size: 1rem;
             margin: 0 0 10px 0;
             text-align: left;
             color: white;
@@ -61,11 +73,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         label {
             font-size: 1rem;
+            margin: 0;
+            text-align: left;
             display: flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            margin-bottom: 10px; /* Increased space between each label */
+            margin-bottom: 10px;
         }
 
         input[type="radio"] {
@@ -74,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             height: 20px;
             border: 1px solid white;
             border-radius: 50%;
+            outline: none;
             cursor: pointer;
             position: relative;
         }
@@ -92,39 +107,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         input[type="range"] {
             width: 100%;
+            -webkit-appearance: none;
+            background: transparent;
             margin: 10px 0;
         }
 
-        .button-container {
-            display: flex;
-            justify-content: space-between;
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
         }
 
-        button {
-            background-color: white;
-            color: black;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: white;
             cursor: pointer;
-            font-size: 1rem;
-            width: 48%;
-        }
-
-        button:hover {
-            background-color: #555;
-            color: white;
-        }
-
-        .slider-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            border-radius: 50%;
+            margin-top: -7px;
         }
 
         .value-display {
             margin-top: 10px;
-            font-size: 1.2em;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background-color: transparent;
+            color: white;
+            padding: 12px 20px;
+            border: 1px solid white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        button:hover {
+            border-color: white;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+                        0 0 30px rgba(255, 255, 255, 0.3),
+                        0 0 40px rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.1);
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(255, 255, 255, 0.5),
+                            0 0 35px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            }
         }
     </style>
 </head>
@@ -140,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <!-- Transportation type options -->
-            <h3>Select your transportation type:</h3>
+            <h2>Select your transportation type:</h2>
             <label>
                 <input type="radio" name="transportation-type" value="own" required>
                 I have my own transportation
