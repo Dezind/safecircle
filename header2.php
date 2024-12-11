@@ -132,6 +132,7 @@
         display: block;
         transition: background-color 0.3s;
         border-radius: 10px;
+        pointer-events: auto;
     }
 
     .dropdown-content a:hover {
@@ -187,14 +188,38 @@
             <div class="dropdown-content">
                 <a href="">My Accounts</a>
                 <a href="">SafeCircles</a>
-                <a href="">Upgrade Plan</a>
-                <a onclick="window.location.href='index.php'">Logout</a>
+                <?php
+                // Check if the user is an admin
+                if (isset($_SESSION['admin']) && $_SESSION['admin'] == 1) {
+                    echo '<a href="admin/adminpage.php">Admin Page</a>';
+                }
+                ?>
+                <a href="user_preference_quiz.php">Preference Quiz</a>
+                <a href="logout.php">Logout</a>
             </div>
         </div>
     </div>
 </nav>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select all anchor tags within .dropdown-content or modify selector as needed
+        const links = document.querySelectorAll('.dropdown-content a');
+
+        links.forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                // Prevent default link behavior if needed
+                e.preventDefault();
+
+                // Ensure navigation to the link's href works
+                if (this.href) {
+                    window.location.href = this.href;
+                }
+            });
+        });
+    });
+
+
     document.addEventListener('DOMContentLoaded', function() {
         const profileDropdown = document.querySelector('.profile-dropdown');
         const profileIcon = document.querySelector('.profile-icon2');

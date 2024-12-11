@@ -123,6 +123,10 @@ if (!$eventresults) {
         </form>
     </div>
 
+    <div class="section">
+<a href="../homepage.php">Home Page</a>
+    </div>
+
 </div>
 </body>
 

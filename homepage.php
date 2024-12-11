@@ -52,13 +52,9 @@ if ($mysql->connect_errno) {
 </script>
 
 
-<body onload="hideLoadingScreen()">
+<body>
 <?php include "header2.php"; ?>
 <?php include "cursor.php"; ?>
-
-
-<?php include "loadingscreen.php"; ?>
-
 
 <div class="containerx">
     <div class="welcometext">Welcome to your SafeCircle, <?php echo $_SESSION['fname'] ?>!
@@ -68,6 +64,61 @@ if ($mysql->connect_errno) {
         <img class="arrow" src="images/arrow.png" alt="pic of arrow" onClick="document.getElementById('jumptopoint').scrollIntoView({ behavior: 'smooth' });" />
 
     </div>
+
+
+    <div class="hptitle" >Personalized Suggestions</div>
+    <br>
+    <?php
+    $start = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 1;
+    $end = $start + 3;
+    $counter = 1;
+
+    $preferencesql = "SELECT * FROM event_preference_view WHERE user_id = '" . $_SESSION['user_id'] . "' AND event_date >= CURRENT_DATE()";
+
+    $preferences = $mysql->query($preferencesql);
+
+    if(!$preferences) {
+        echo "SQL error: ". $mysql->error . " running query <hr>" . $preferencesql . "<hr>";
+        exit();
+    }
+    ?>
+    <div class="gallery-container clearfix">
+        <div class="gallery-grid">
+            <?php while($currentrow = $preferences->fetch_assoc()): ?>
+                <?php if($counter >= $start && $counter <= $end): ?>
+                    <div class="gallery-card">
+                        <img src="images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
+                        <div class="gallery-details">
+                            <h3 class="gallery-caption"><?php echo htmlspecialchars($currentrow['event_name']); ?></h3>
+                            <p class="gallery-description">
+                                <?php echo date('D, M j', strtotime($currentrow['event_date'])); ?> •
+                                <?php echo date('g:ia', strtotime($currentrow['start_time'])); ?>
+                            </p>
+                            <div class="button-group">
+                                <button class="share-btn">Share</button>
+                                <button class="download-btn">RSVP</button>
+                            </div>
+                        </div> <!-- /.gallery-details -->
+                    </div> <!-- /.gallery-card -->
+                <?php endif; ?>
+
+                <?php
+                // Increment the counter after each row
+                $counter++;
+
+                // If we've printed all the events we need, break out of the loop
+                if($counter > $end) {
+                    break;
+                }
+                ?>
+            <?php endwhile; ?>
+        </div>
+    </div>
+
+    <?php
+    echo '<a href="?start='.($start-5).'">Previous</a> | <a href="?start='.($start+5).'">Next</a>';
+    ?>
+
 
     <?php
     $sql = "SELECT * FROM event_types";
@@ -115,6 +166,8 @@ if ($mysql->connect_errno) {
     </div>
 
 
+
+
     <!-----------------------------------Recommended Events-------------------------------->
 
     <div class="hptitle" >Recommended for You</div>
@@ -136,7 +189,7 @@ if ($mysql->connect_errno) {
 
     $sql1 = "SELECT * FROM eventview WHERE event_date >= CURRENT_DATE()";
 
-    if (!empty($_GET['event_type']) && $_GET['event_date'] !== 'all') {
+    if (!empty($_GET['event_type']) && $_GET['event_type'] !== 'all') {
         $eventType = $_GET['event_type'];
         $sql1 .= " AND event_type = '$eventType'";
     } else {
@@ -233,57 +286,7 @@ if ($mysql->connect_errno) {
 
     <!-----------------------------------Featured Events-------------------------------->
 
-    <div class="hptitle">Featured Events</div>
-    <br>
 
-    <div class="gallery-container clearfix">
-        <div class="gallery-grid">
-            <div class="gallery-card">
-                <img src="images/homepagephotos/homep5.png" alt="Event 5" class="gallery-image">
-                <div class="gallery-details">
-                    <h3 class="gallery-caption">Event #5</h3>
-                    <p class="gallery-description">Event #5 Description</p>
-                    <div class="button-group">
-                        <button class="share-btn">Share</button>
-                        <button class="download-btn">RSVP</button>
-                    </div>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <img src="images/homepagephotos/homep6.png" alt="Event 6" class="gallery-image">
-                <div class="gallery-details">
-                    <h3 class="gallery-caption">Event #6</h3>
-                    <p class="gallery-description">Event #6 Description</p>
-                    <div class="button-group">
-                        <button class="share-btn">Share</button>
-                        <button class="download-btn">RSVP</button>
-                    </div>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <img src="images/homepagephotos/homep7.png" alt="Event 7" class="gallery-image">
-                <div class="gallery-details">
-                    <h3 class="gallery-caption">Event #7</h3>
-                    <p class="gallery-description">Event #7 Description</p>
-                    <div class="button-group">
-                        <button class="share-btn">Share</button>
-                        <button class="download-btn">RSVP</button>
-                    </div>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <img src="images/homepagephotos/homep8.png" alt="Event 8" class="gallery-image">
-                <div class="gallery-details">
-                    <h3 class="gallery-caption">Event #8</h3>
-                    <p class="gallery-description">Event #8 Description</p>
-                    <div class="button-group">
-                        <button class="share-btn">Share</button>
-                        <button class="download-btn">RSVP</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!----------------------------------FRIENDS---------------------------------------->
     <h1 class="hptitle">Friends</h1>

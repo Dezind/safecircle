@@ -46,7 +46,7 @@ if (isset($_FILES['banner_img']) && $_FILES['banner_img']['error'] == UPLOAD_ERR
     $unique_name = uniqid() . "_" . $original_name;
     $upload_file = $upload_dir . $unique_name;
 
-    $allowed_types = ['image/jpeg', 'image/png'];
+    $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
     $file_type = $_FILES['banner_img']['type'];
     if (!in_array($file_type, $allowed_types)) {
         echo "Invalid file type.";
@@ -103,6 +103,7 @@ if (!$stmt->execute()) {
     exit();
 } else {
     echo "Event successfully updated.";
+    echo "<a href='adminpage.php'>Back to admin page</a>";
 }
 
 $stmt->close();
