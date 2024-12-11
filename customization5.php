@@ -99,6 +99,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 1rem;
         }
 
+        .button-container {
+            display: flex;
+            gap: 15px;
+        }
+
         button {
             background-color: transparent;
             color: white;
@@ -148,7 +153,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="value-display" id="slider-value">0 miles</div>
             </div>
 
-            <button type="submit">Next</button>
+            <div class="button-container">
+                <button type="button" onclick="window.location.href='customization4.php'">Back</button>
+                <button type="submit">Next</button>
+            </div>
         </form>
     </div>
 
