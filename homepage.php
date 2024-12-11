@@ -183,9 +183,9 @@ if ($mysql->connect_errno) {
     // }
 
     // Determine the 'start' index, defaulting to 1 if not provided
-    $start = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 1;
-    $end = $start + 3;
-    $counter = 1;
+    $start1 = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 1;
+    $end1 = $start1 + 3;
+    $counter1 = 1;
 
     $sql1 = "SELECT * FROM eventview WHERE event_date >= CURRENT_DATE()";
 
@@ -249,7 +249,7 @@ if ($mysql->connect_errno) {
     <div class="gallery-container clearfix">
         <div class="gallery-grid">
             <?php while($currentrow = $results1->fetch_assoc()): ?>
-                <?php if($counter >= $start && $counter <= $end): ?>
+                <?php if($counter1 >= $start1 && $counter1 <= $end1): ?>
                     <div class="gallery-card">
                         <img src="images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
                         <div class="gallery-details">
@@ -268,10 +268,10 @@ if ($mysql->connect_errno) {
 
                 <?php
                 // Increment the counter after each row
-                $counter++;
+                $counter1++;
 
                 // If we've printed all the events we need, break out of the loop
-                if($counter > $end) {
+                if($counter1 > $end1) {
                     break;
                 }
                 ?>
