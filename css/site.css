@@ -221,10 +221,13 @@ header {
     background-color: #000000;
     color: #fff;
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
     justify-content: space-between;
-    padding: 20px;
+    /*padding: 20px;*/
     position: relative;
+    margin-top: -30px;
+
+
 }
 header img {
     width: 50px;
@@ -238,7 +241,7 @@ header h1 {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-family: "Helvetica Neue", serif;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif
 }
 header nav {
     display: flex;
@@ -299,6 +302,7 @@ a h1 {
     font-size: 1rem;
     border: 1px solid white;
     cursor: pointer;
+
 }
 footer {
     background-color: #000;
