@@ -333,7 +333,8 @@
                     echo '<a href="https://amypan.webdev.iyaserver.com/safecircle/admin/adminpage.php">Admin Page</a>';
                 }
                 ?>
-                <a href="user_preference_quiz.php">Preference Quiz</a>
+                <a href="user_preference_quiz.php">Set Interests</a>
+                <a href="customization1.php">Preference Quiz</a>
                 <a href="logout.php">Logout</a>
             </div>
         </div>

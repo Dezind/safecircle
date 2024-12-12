@@ -123,14 +123,57 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
         exit();
     }
 
+    $isAjax = isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == 'true';
+
+    if ($isAjax) {
+        // Return only the required sections for AJAX requests
+        $currentStart = $offset + 1;
+        $currentEnd = min($offset + $itemsPerPage, $totalRows);
+
+        $response = [
+            'resultsCount' => "Showing $currentStart–$currentEnd of $totalRows results",
+            'gallery' => '',
+        ];
+
+        ob_start(); // Start output buffering to capture HTML
+        while ($currentrow = $preferences->fetch_assoc()) {
+            ?>
+            <div class="gallery-card" data-event-id="<?php echo htmlspecialchars($currentrow['event_id']); ?>">
+                <img src="https://amypan.webdev.iyaserver.com/safecircle/images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
+                <div class="gallery-details">
+                    <h3 class="gallery-caption"><?php echo htmlspecialchars($currentrow['event_name']); ?></h3>
+                    <p class="gallery-description">
+                        <?php echo date('D, M j', strtotime($currentrow['event_date'])); ?> •
+                        <?php echo date('g:ia', strtotime($currentrow['start_time'])); ?>
+                    </p>
+                    <div class="button-group">
+                        <button class="share-btn">Share</button>
+                        <button class="download-btn">RSVP</button>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        $response['gallery'] = ob_get_clean(); // Capture gallery HTML
+
+        echo json_encode($response);
+        exit();
+    }
+
+
     if($totalRows < 1) {
         echo "<div class='hptitle'>No Results</div>";
     } else {
         ?>
 
         <div class="results-count">
-            Showing <?php echo min($totalRows - $start + 1, 4); ?> of <?php echo $totalRows; ?> results
+            Showing <?php
+            $end = min($start + 3, $totalRows); // Calculate the end of the range
+            echo $start . '–' . $end; // Display the range
+            ?> of <?php echo $totalRows; ?> results
         </div>
+
+
 
         <div class="gallery-section">
             <?php if($start > 1): ?>
@@ -147,7 +190,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                     <?php while($currentrow = $preferences->fetch_assoc()): ?>
                         <?php if($counter >= $start && $counter <= $end): ?>
                             <div class="gallery-card" data-event-id="<?php echo htmlspecialchars($currentrow['event_id']); ?>">
-                                <img src="images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
+                                <img src="https://amypan.webdev.iyaserver.com/safecircle/images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
                                 <div class="gallery-details">
                                     <h3 class="gallery-caption"><?php echo htmlspecialchars($currentrow['event_name']); ?></h3>
                                     <p class="gallery-description">
@@ -188,6 +231,30 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
     ?>
 
     <script>
+        // function navigatePage(startIndex) {
+        //     // Get current URL and update the 'start' parameter
+        //     const url = new URL(window.location.href);
+        //     url.searchParams.set('start', startIndex);
+        //
+        //     // Use fetch to get the new content
+        //     fetch(url)
+        //         .then(response => response.text())
+        //         .then(html => {
+        //             // Update URL without page reload
+        //             history.pushState({}, '', url);
+        //
+        //             // Create a temporary container
+        //             const temp = document.createElement('div');
+        //             temp.innerHTML = html;
+        //
+        //             // Find the gallery sections in both current and new content
+        //             const currentGallery = document.querySelector('.gallery-section');
+        //             const newGallery = temp.querySelector('.gallery-section');
+        //
+        //             // Replace the old gallery with the new one
+        //             currentGallery.innerHTML = newGallery.innerHTML;
+        //         });
+        // }
         function navigatePage(startIndex) {
             // Get current URL and update the 'start' parameter
             const url = new URL(window.location.href);
@@ -204,187 +271,201 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                     const temp = document.createElement('div');
                     temp.innerHTML = html;
 
+                    // Update the "Showing results" section
+                    const newResultsCount = temp.querySelector('.results-count');
+                    const currentResultsCount = document.querySelector('.results-count');
+                    if (newResultsCount && currentResultsCount) {
+                        currentResultsCount.innerHTML = newResultsCount.innerHTML;
+                    }
+
                     // Find the gallery sections in both current and new content
                     const currentGallery = document.querySelector('.gallery-section');
                     const newGallery = temp.querySelector('.gallery-section');
 
                     // Replace the old gallery with the new one
-                    currentGallery.innerHTML = newGallery.innerHTML;
+                    if (currentGallery && newGallery) {
+                        currentGallery.innerHTML = newGallery.innerHTML;
+                    }
+                })
+                .catch(err => {
+                    console.error('Error updating page:', err);
                 });
         }
+
+
     </script>
 
-    <?php
-    $sql = "SELECT * FROM event_types";
-
-    $results = $mysql->query($sql);
-
-    if(!$results) {
-        echo "SQL error: ". $mysql->error . " running query <hr>" . $sql . "<hr>";
-        exit();
-    }
-    ?>
-
-
-    <!-- Keep your original HTML structure -->
-    <div class="headerx">
-        <h1 class="hptitle" id="jumptopoint">Event Suggestions</h1>
-        <br>
-        <div class="filtersx">
-            <button class="filter-btn" data-dropdown="eventType">
-                EVENT TYPE ▼
-                <div id="eventTypeDropdown" class="dropdown-content">
-                    <?php while($currentrow = $results->fetch_assoc()): ?>
-                        <a href="javascript:void(0)" data-filter-type="event_type" data-filter-value="<?php echo $currentrow['event_type'] ?>"><?php echo $currentrow['event_type'] ?></a>
-                    <?php endwhile; ?>
-                    <a href="javascript:void(0)" data-filter-type="event_type" data-filter-value="all">Today</a>
-                </div>
-            </button>
-            <button class="filter-btn" data-dropdown="date">
-                DATE ▼
-                <div id="dateDropdown" class="dropdown-content">
-                    <a href="javascript:void(0)" data-filter-type="event_date" data-filter-value="today">Today</a>
-                    <a href="javascript:void(0)" data-filter-type="event_date" data-filter-value="this_week">This Week</a>
-                    <a href="javascript:void(0)" data-filter-type="event_date" data-filter-value="this_month">This Month</a>
-                    <a href="javascript:void(0)" data-filter-type="event_date" data-filter-value="all">All</a>
-                </div>
-            </button>
-            <button class="filter-btn" data-dropdown="location">
-                LOCATION ▼
-                <div id="locationDropdown" class="dropdown-content">
-                    <a href="javascript:void(0)" data-filter-type="oncampus" data-filter-value="oncampus">On Campus</a>
-                    <a href="javascript:void(0)" data-filter-type="oncampus" data-filter-value="downtown">Downtown</a>
-                    <a href="javascript:void(0)" data-filter-type="oncampus" data-filter-value="all">All</a>
-                </div>
-            </button>
-            <button id="applyFilters" class="apply-filters-btn">Apply Filters</button>
-        </div>
-    </div>
-
-
-
-
-
-    <!-----------------------------------Recommended Events-------------------------------->
-
-    <div class="hptitle" >Recommended for You</div>
-    <br>
-
-
-    <?php
-    // Ensure that $mysql is an active MySQLi connection.
-    // Example:
-    // $mysql = new mysqli("localhost", "username", "password", "database");
-    // if($mysql->connect_error) {
-    //     die("Connection failed: " . $mysql->connect_error);
-    // }
-
-    // Determine the 'start' index, defaulting to 1 if not provided
-    $start1 = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 1;
-    $end1 = $start1 + 3;
-    $counter1 = 1;
-
-    $sql1 = "SELECT * FROM eventview WHERE event_date >= CURRENT_DATE()";
-
-    if (!empty($_GET['event_type']) && $_GET['event_type'] !== 'all') {
-        $eventType = $_GET['event_type'];
-        $sql1 .= " AND event_type = '$eventType'";
-    } else {
-        $sql1 .= "";
-    }
-
-    if (!empty($_GET['event_date'])) {
-        $date = $_GET['event_date'];
-
-
-        // Determine which filter to apply.
-        if ($date === 'today') {
-            // Filter for events that have today's date
-            $sql1 .= " AND event_date = CURDATE()";
-        } elseif ($date === 'this_week') {
-            // Filter for events in the current week.
-            // YEARWEEK() returns the year and week number;
-            // using YEARWEEK with CURDATE() isolates the current week's events.
-            $sql1 .= " AND YEARWEEK(event_date, 1) = YEARWEEK(CURDATE(), 1)";
-        } elseif ($date === 'this_month') {
-            // Filter for events occurring in the current month.
-            $sql1 .= " AND MONTH(event_date) = MONTH(CURDATE()) AND YEAR(event_date) = YEAR(CURDATE())";
-        } elseif ($date !== 'all') {
-            // If $date is presumably a specific date in YYYY-MM-DD format, filter by that exact date.
-            $sql1 .= "";
-        }
-    }
-
-    if (!empty($_GET['oncampus'])) {
-        $oncampus = $_GET['oncampus'];
-
-
-        // Determine which filter to apply.
-        if ($oncampus === 'oncampus') {
-            // Filter for events that have today's date
-            $sql1 .= " AND oncampus = '1'";
-        } elseif ($oncampus === 'downtown') {
-            $sql1 .= " AND oncampus = '0'";
-        } elseif ($oncampus === 'all') {
-            $sql1 .= "";
-        }
-    }
-
-    $results1 = $mysql->query($sql1);
-
-    if($results1 < 1) {
-        echo "<div class='hptitle' >No Results</div>";
-    }
-
-    if(!$results1) {
-        echo "SQL error: ". htmlspecialchars($mysql->error) . " running query <hr>" . htmlspecialchars($sql1) . "<hr>";
-        exit();
-    }
-
-    ?>
-
-    <script>
-        document.querySelector('.gallery-card').addEventListener('click', function(e) {
-            //when clicked the user is taken to eventdetails (1).php?event_id=$currentrow['event_id']
-        }
-    </script>
-
-    <div class="gallery-container clearfix">
-        <div class="gallery-grid">
-            <?php while($currentrow = $results1->fetch_assoc()): ?>
-                <?php if($counter1 >= $start1 && $counter1 <= $end1): ?>
-                    <div class="gallery-card" data-event-id="<?php echo htmlspecialchars($currentrow['event_id']); ?>">
-                        <img src="https://amypan.webdev.iyaserver.com/safecircle/images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
-                        <div class="gallery-details">
-                            <h3 class="gallery-caption"><?php echo htmlspecialchars($currentrow['event_name']); ?></h3>
-                            <p class="gallery-description">
-                                <?php echo date('D, M j', strtotime($currentrow['event_date'])); ?> •
-                                <?php echo date('g:ia', strtotime($currentrow['start_time'])); ?>
-                            </p>
-                            <div class="button-group">
-                                <button class="share-btn">Share</button>
-                                <button class="download-btn">RSVP</button>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php
-                // Increment the counter after each row
-                $counter1++;
-
-                // If we've printed all the events we need, break out of the loop
-                if($counter1 > $end1) {
-                    break;
-                }
-                ?>
-            <?php endwhile; ?>
-        </div>
-    </div>
-
-    <?php
-    echo '<a href="?start='.($start-5).'">Previous</a> | <a href="?start='.($start+5).'">Next</a>';
-    ?>
+<!--    --><?php
+//    $sql = "SELECT * FROM event_types";
+//
+//    $results = $mysql->query($sql);
+//
+//    if(!$results) {
+//        echo "SQL error: ". $mysql->error . " running query <hr>" . $sql . "<hr>";
+//        exit();
+//    }
+//    ?>
+<!---->
+<!---->
+<!--     Keep your original HTML structure -->
+<!--    <div class="headerx">-->
+<!--        <h1 class="hptitle" id="jumptopoint">Event Suggestions</h1>-->
+<!--        <br>-->
+<!--        <div class="filtersx">-->
+<!--            <button class="filter-btn" data-dropdown="eventType">-->
+<!--                EVENT TYPE ▼-->
+<!--                <div id="eventTypeDropdown" class="dropdown-content">-->
+<!--                    --><?php //while($currentrow = $results->fetch_assoc()): ?>
+<!--                        <a href="javascript:void(0)" data-filter-type="event_type" data-filter-value="--><?php //echo $currentrow['event_type'] ?><!--">--><?php //echo $currentrow['event_type'] ?><!--</a>-->
+<!--                    --><?php //endwhile; ?>
+<!--                    <a href="javascript:void(0)" data-filter-type="event_type" data-filter-value="all">Today</a>-->
+<!--                </div>-->
+<!--            </button>-->
+<!--            <button class="filter-btn" data-dropdown="date">-->
+<!--                DATE ▼-->
+<!--                <div id="dateDropdown" class="dropdown-content">-->
+<!--                    <a href="javascript:void(0)" data-filter-type="event_date" data-filter-value="today">Today</a>-->
+<!--                    <a href="javascript:void(0)" data-filter-type="event_date" data-filter-value="this_week">This Week</a>-->
+<!--                    <a href="javascript:void(0)" data-filter-type="event_date" data-filter-value="this_month">This Month</a>-->
+<!--                    <a href="javascript:void(0)" data-filter-type="event_date" data-filter-value="all">All</a>-->
+<!--                </div>-->
+<!--            </button>-->
+<!--            <button class="filter-btn" data-dropdown="location">-->
+<!--                LOCATION ▼-->
+<!--                <div id="locationDropdown" class="dropdown-content">-->
+<!--                    <a href="javascript:void(0)" data-filter-type="oncampus" data-filter-value="oncampus">On Campus</a>-->
+<!--                    <a href="javascript:void(0)" data-filter-type="oncampus" data-filter-value="downtown">Downtown</a>-->
+<!--                    <a href="javascript:void(0)" data-filter-type="oncampus" data-filter-value="all">All</a>-->
+<!--                </div>-->
+<!--            </button>-->
+<!--            <button id="applyFilters" class="apply-filters-btn">Apply Filters</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!--    ---------------------------------Recommended Events-------------------------------->
+<!---->
+<!--    <div class="hptitle" >Recommended for You</div>-->
+<!--    <br>-->
+<!---->
+<!---->
+<!--    --><?php
+//    // Ensure that $mysql is an active MySQLi connection.
+//    // Example:
+//    // $mysql = new mysqli("localhost", "username", "password", "database");
+//    // if($mysql->connect_error) {
+//    //     die("Connection failed: " . $mysql->connect_error);
+//    // }
+//
+//    // Determine the 'start' index, defaulting to 1 if not provided
+//    $start1 = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 1;
+//    $end1 = $start1 + 3;
+//    $counter1 = 1;
+//
+//    $sql1 = "SELECT * FROM eventview WHERE event_date >= CURRENT_DATE()";
+//
+//    if (!empty($_GET['event_type']) && $_GET['event_type'] !== 'all') {
+//        $eventType = $_GET['event_type'];
+//        $sql1 .= " AND event_type = '$eventType'";
+//    } else {
+//        $sql1 .= "";
+//    }
+//
+//    if (!empty($_GET['event_date'])) {
+//        $date = $_GET['event_date'];
+//
+//
+//        // Determine which filter to apply.
+//        if ($date === 'today') {
+//            // Filter for events that have today's date
+//            $sql1 .= " AND event_date = CURDATE()";
+//        } elseif ($date === 'this_week') {
+//            // Filter for events in the current week.
+//            // YEARWEEK() returns the year and week number;
+//            // using YEARWEEK with CURDATE() isolates the current week's events.
+//            $sql1 .= " AND YEARWEEK(event_date, 1) = YEARWEEK(CURDATE(), 1)";
+//        } elseif ($date === 'this_month') {
+//            // Filter for events occurring in the current month.
+//            $sql1 .= " AND MONTH(event_date) = MONTH(CURDATE()) AND YEAR(event_date) = YEAR(CURDATE())";
+//        } elseif ($date !== 'all') {
+//            // If $date is presumably a specific date in YYYY-MM-DD format, filter by that exact date.
+//            $sql1 .= "";
+//        }
+//    }
+//
+//    if (!empty($_GET['oncampus'])) {
+//        $oncampus = $_GET['oncampus'];
+//
+//
+//        // Determine which filter to apply.
+//        if ($oncampus === 'oncampus') {
+//            // Filter for events that have today's date
+//            $sql1 .= " AND oncampus = '1'";
+//        } elseif ($oncampus === 'downtown') {
+//            $sql1 .= " AND oncampus = '0'";
+//        } elseif ($oncampus === 'all') {
+//            $sql1 .= "";
+//        }
+//    }
+//
+//    $results1 = $mysql->query($sql1);
+//
+//    if($results1 < 1) {
+//        echo "<div class='hptitle' >No Results</div>";
+//    }
+//
+//    if(!$results1) {
+//        echo "SQL error: ". htmlspecialchars($mysql->error) . " running query <hr>" . htmlspecialchars($sql1) . "<hr>";
+//        exit();
+//    }
+//
+//    ?>
+<!---->
+<!--    <script>-->
+<!--        document.querySelector('.gallery-card').addEventListener('click', function(e) {-->
+<!--            //when clicked the user is taken to eventdetails (1).php?event_id=$currentrow['event_id']-->
+<!--        }-->
+<!--    </script>-->
+<!---->
+<!--    <div class="gallery-container clearfix">-->
+<!--        <div class="gallery-grid">-->
+<!--            --><?php //while($currentrow = $results1->fetch_assoc()): ?>
+<!--                --><?php //if($counter1 >= $start1 && $counter1 <= $end1): ?>
+<!--                    <div class="gallery-card" data-event-id="--><?php //echo htmlspecialchars($currentrow['event_id']); ?><!--">-->
+<!--                        <img src="https://amypan.webdev.iyaserver.com/safecircle/images/banners/--><?php //echo htmlspecialchars($currentrow['banner_img']); ?><!--" alt="Event Banner" class="gallery-image">-->
+<!--                        <div class="gallery-details">-->
+<!--                            <h3 class="gallery-caption">--><?php //echo htmlspecialchars($currentrow['event_name']); ?><!--</h3>-->
+<!--                            <p class="gallery-description">-->
+<!--                                --><?php //echo date('D, M j', strtotime($currentrow['event_date'])); ?><!-- •-->
+<!--                                --><?php //echo date('g:ia', strtotime($currentrow['start_time'])); ?>
+<!--                            </p>-->
+<!--                            <div class="button-group">-->
+<!--                                <button class="share-btn">Share</button>-->
+<!--                                <button class="download-btn">RSVP</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                --><?php //endif; ?>
+<!---->
+<!--                --><?php
+//                // Increment the counter after each row
+//                $counter1++;
+//
+//                // If we've printed all the events we need, break out of the loop
+//                if($counter1 > $end1) {
+//                    break;
+//                }
+//                ?>
+<!--            --><?php //endwhile; ?>
+<!--        </div>-->
+<!--    </div>-->
+<!---->
+<!--    --><?php
+//    echo '<a href="?start='.($start-5).'">Previous</a> | <a href="?start='.($start+5).'">Next</a>';
+//    ?>
 
 
     <!-----------------------------------Featured Events-------------------------------->
