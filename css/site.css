@@ -117,6 +117,7 @@ input,
 select {
     min-height: 44px;
     min-width: 44px;
+
 }
 
 /* Hide/Show Elements Responsively */
@@ -302,7 +303,8 @@ a h1 {
     font-size: 1rem;
     border: 1px solid white;
     cursor: pointer;
-
+    position: relative;
+    z-index: 100;
 }
 footer {
     background-color: #000;
@@ -1154,7 +1156,7 @@ h2 {
     z-index: 999;
 }
 .hover-gallery {
-    position: fixed;
+    position: relative;
     pointer-events: none;
     display: grid;
     grid-template-columns: repeat(2, 400px);
@@ -1174,6 +1176,7 @@ h2 {
     object-fit: cover;
     background: #eee;
 }
+
 
 /*-------------------------event details page---------------------------*/
 

@@ -70,17 +70,26 @@
 -->
     <section class="section" id="events">
         <h3>MAKE MEMORIES</h3><br>
-        <button onclick="window.location.href='signuppage.php'">Join SafeCircle</button>
+        <button id= "onestubbornbutton" onclick="window.location.href='signuppage.php'">Join SafeCircle</button>
     </section>
+                       <!----------------------------------------->
+                        <style>
+                            #onestubbornbutton {
+                                position: relative;
+                                z-index: 999;
+                            }
+                        </style>
+                        <!----------------------------------------->
 
-<!-- (GONNA TRY TO FIX THIS - TONGFEI)
-    <div class="hover-gallery">
-        <img src="images/banners/banner.png" alt="placeholder">
-        <img src="images/banners/banner.png" alt="placeholder">
-        <img src="images/banners/banner.png" alt="placeholder">
-        <img src="images/banners/banner.png" alt="placeholder">
-    </div>
--->
+
+    <!-- (GONNA TRY TO FIX THIS - TONGFEI)
+        <div class="hover-gallery">
+            <img src="images/banners/banner.png" alt="placeholder">
+            <img src="images/banners/banner.png" alt="placeholder">
+            <img src="images/banners/banner.png" alt="placeholder">
+            <img src="images/banners/banner.png" alt="placeholder">
+        </div>
+    -->
 
 <!--------------------HOVER GALLERY CODE---------------------->
     <script>
