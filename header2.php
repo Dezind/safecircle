@@ -77,7 +77,8 @@
 
     /* Responsive Typography */
     h1 {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
+        font-weight:600;
     }
 
     h2 {
@@ -140,7 +141,7 @@
     }
     .navbar2 {
         background-color: black;
-        padding: 30px 40px;
+        padding: 32px 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
