@@ -37,9 +37,15 @@ if ($mysql->connect_errno) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" href="css/site.css" rel="stylesheet">
-    <link type="text/css" href="css/homepage.css" rel="stylesheet"
+    <link type="text/css" href="css/homepage.css" rel="stylesheet">
     <title>HOME PAGE - (purely placeholders)</title>
-    <style></style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+    </style>
+
 </head>
 <script>
     function setFilter(key, value) {
