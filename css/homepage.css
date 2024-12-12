@@ -177,8 +177,8 @@ select {
 /*---------------------------<New CSS>----------------------------*/
 
 .filtersx {
-    position: relative;
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
@@ -194,11 +194,43 @@ select {
     align-items: center;
     gap: 0.5rem;
     transition: all 0.3s;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .filter-btn:hover {
     background: #fff;
     color: #000;
+}
+
+.filter-link {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 16px;
+    color: black;
+    min-height: unset; /* Override the global button min-height */
+    display: block;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.filter-link:hover {
+    background-color: #f1f1f1;
+}
+
+/* Update your existing dropdown-content styles to accommodate the new button elements */
+.dropdown-content button {
+    color: black;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+/* Override any existing button styles that might affect the filter-link */
+.filter-link {
+    min-width: unset;
 }
 
 .dropdown-content {
@@ -229,6 +261,25 @@ select {
     display: block;
 }
 
+.apply-filters-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin-left: 10px;
+    z-index: 1;
+    position: relative;
+}
+
+.apply-filters-btn:hover {
+    background: white;
+    color: black;
+}
 
 /*-------------------------------------------------------*/
 
@@ -504,12 +555,12 @@ div.desc {
 
 .nav-arrow {
     position: absolute;
-    top: 50%;
+    top: 300px;
     transform: translateY(-50%);
     background: transparent;
     border: none;
     color: white;
-    font-size: 5rem; /* Bigger size */
+    font-size: 5rem;
     cursor: pointer;
     padding: 2rem;
     opacity: 0.8;
@@ -524,7 +575,7 @@ div.desc {
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
     0 0 30px rgba(255, 255, 255, 0.6),
     0 0 40px rgba(255, 255, 255, 0.4);
-    animation: none; /* Stop pulsing on hover */
+    animation: none;
 }
 
 .nav-arrow.prev {
@@ -534,6 +585,8 @@ div.desc {
 
 .nav-arrow.next {
     right: -6rem;
+
+
 }
 
 /* Pulse animation */
