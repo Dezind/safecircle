@@ -1156,7 +1156,7 @@ h2 {
     z-index: 999;
 }
 .hover-gallery {
-    position: relative;
+    position: fixed;
     pointer-events: none;
     display: grid;
     grid-template-columns: repeat(2, 400px);
