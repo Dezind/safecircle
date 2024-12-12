@@ -49,10 +49,28 @@ if ($mysql->connect_errno) {
 </head>
 <script>
     function setFilter(key, value) {
-        // Get current query parameters
+        // Get current URL and update the parameter
         const url = new URL(window.location.href);
-        url.searchParams.set(key, value); // set or update the filter param
-        window.location.href = url.toString(); // reload page with new params
+        url.searchParams.set(key, value);
+
+        // Use fetch to get new content
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                // Update URL without page reload
+                history.pushState({}, '', url);
+
+                // Create a temporary container
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+
+                // Find the gallery sections in both current and new content
+                const currentGallery = document.querySelector('.gallery-container');
+                const newGallery = temp.querySelector('.gallery-container');
+
+                // Replace the old gallery with the new one
+                currentGallery.innerHTML = newGallery.innerHTML;
+            });
     }
 
 </script>
@@ -66,14 +84,15 @@ if ($mysql->connect_errno) {
     <div class="welcometext">Welcome to your SafeCircle, <?php echo $_SESSION['fname'] ?>!
 
         <br><br>
-        <!--DOWN ARROW SCROLL BUTTON TEST-->
-        <img class="arrow" src="images/arrow.png" alt="pic of arrow" onClick="document.getElementById('jumptopoint').scrollIntoView({ behavior: 'smooth' });" />
+      <!--DOWN ARROW SCROLL BUTTON TEST-->
+
 
     </div>
 
 
-    <div class="hptitle" >Personalized Suggestions</div>
+    <div class="hptitle">Personalized Suggestions</div>
     <br>
+
     <?php
     $start = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 1;
     $end = $start + 3;
@@ -81,63 +100,108 @@ if ($mysql->connect_errno) {
 
     $preferencesql = "SELECT * FROM event_preference_view WHERE user_id = '" . $_SESSION['user_id'] . "' AND event_date >= CURRENT_DATE()";
 
+    // Get total count
+    $countResult = $mysql->query($preferencesql);
+    $totalRows = $countResult->num_rows;
+    $itemsPerPage = 4;
+    $totalPages = ceil($totalRows / $itemsPerPage);
+    $currentPage = ceil($start / $itemsPerPage);
+
     $preferences = $mysql->query($preferencesql);
 
     if(!$preferences) {
         echo "SQL error: ". $mysql->error . " running query <hr>" . $preferencesql . "<hr>";
         exit();
     }
-    ?>
-    <script>
-        // Wait until the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', function () {
-            // Attach the click event listener to all elements with the class 'gallery-card'
-            document.querySelectorAll('.gallery-card').forEach(function(card) {
-                card.addEventListener('click', function(e) {
-                    // Redirect to the desired page with the event_id
-                    const eventId = card.id; // Get the event ID from the element's ID
-                    window.location.href = `eventdetails (1).php?event_id=${eventId}`;
-                });
-            });
-        });
-    </script>
-    <div class="gallery-container clearfix">
-        <div class="gallery-grid">
-            <?php while($currentrow = $preferences->fetch_assoc()): ?>
-                <?php if($counter >= $start && $counter <= $end): ?>
-                    <div class="gallery-card" id="<?php echo $currentrow['event_id'] ?>">
-                        <img src="https://amypan.webdev.iyaserver.com/safecircle/images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
-                        <div class="gallery-details">
-                            <h3 class="gallery-caption"><?php echo htmlspecialchars($currentrow['event_name']); ?></h3>
-                            <p class="gallery-description">
-                                <?php echo date('D, M j', strtotime($currentrow['event_date'])); ?> •
-                                <?php echo date('g:ia', strtotime($currentrow['start_time'])); ?>
-                            </p>
-                            <div class="button-group">
-                                <button class="share-btn">Share</button>
-                                <button class="download-btn">RSVP</button>
-                            </div>
-                        </div> <!-- /.gallery-details -->
-                    </div> <!-- /.gallery-card -->
-                <?php endif; ?>
 
-                <?php
-                // Increment the counter after each row
-                $counter++;
+    if($totalRows < 1) {
+        echo "<div class='hptitle'>No Results</div>";
+    } else {
+        ?>
 
-                // If we've printed all the events we need, break out of the loop
-                if($counter > $end) {
-                    break;
-                }
-                ?>
-            <?php endwhile; ?>
+        <div class="results-count">
+            Showing <?php echo min($totalRows - $start + 1, 4); ?> of <?php echo $totalRows; ?> results
         </div>
-    </div>
 
-    <?php
-    echo '<a href="?start='.($start-5).'">Previous</a> | <a href="?start='.($start+5).'">Next</a>';
+        <div class="gallery-section">
+            <?php if($start > 1): ?>
+                <button onclick="navigatePage(<?php echo max(1, $start-4); ?>)"
+                        class="nav-arrow prev">
+                    ›
+                </button>
+            <?php endif; ?>
+
+            <div class="gallery-container clearfix">
+                <div class="gallery-grid">
+                    <?php while($currentrow = $preferences->fetch_assoc()): ?>
+                        <?php if($counter >= $start && $counter <= $end): ?>
+                            <div class="gallery-card">
+                                <img src="images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
+                                <div class="gallery-details">
+                                    <h3 class="gallery-caption"><?php echo htmlspecialchars($currentrow['event_name']); ?></h3>
+                                    <p class="gallery-description">
+                                        <?php echo date('D, M j', strtotime($currentrow['event_date'])); ?> •
+                                        <?php echo date('g:ia', strtotime($currentrow['start_time'])); ?>
+                                    </p>
+                                    <div class="button-group">
+                                        <button class="share-btn">Share</button>
+                                        <button class="download-btn">RSVP</button>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        <?php
+                        $counter++;
+                        if($counter > $end) break;
+                        ?>
+                    <?php endwhile; ?>
+                </div>
+            </div>
+
+            <?php if($start + 4 <= $totalRows): ?>
+                <button onclick="navigatePage(<?php echo $start+4; ?>)"
+                        class="nav-arrow next">
+                    ›
+                </button>
+            <?php endif; ?>
+
+            <div class="page-dots">
+                <?php for($i = 1; $i <= $totalPages; $i++): ?>
+                    <span class="page-dot <?php echo ($i == $currentPage) ? 'active' : ''; ?>"></span>
+                <?php endfor; ?>
+            </div>
+        </div>
+
+        <?php
+    }
     ?>
 
+    <script>
+        function navigatePage(startIndex) {
+            // Get current URL and update the 'start' parameter
+            const url = new URL(window.location.href);
+            url.searchParams.set('start', startIndex);
+
+            // Use fetch to get the new content
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    // Update URL without page reload
+                    history.pushState({}, '', url);
+
+                    // Create a temporary container
+                    const temp = document.createElement('div');
+                    temp.innerHTML = html;
+
+                    // Find the gallery sections in both current and new content
+                    const currentGallery = document.querySelector('.gallery-section');
+                    const newGallery = temp.querySelector('.gallery-section');
+
+                    // Replace the old gallery with the new one
+                    currentGallery.innerHTML = newGallery.innerHTML;
+                });
+        }
+    </script>
 
     <?php
     $sql = "SELECT * FROM event_types";
@@ -155,30 +219,30 @@ if ($mysql->connect_errno) {
         <h1 class="hptitle" id="jumptopoint">Event Suggestions</h1>
         <br>
         <div class="filtersx">
-            <button class="filter-btn" onclick="toggleDropdown('eventType')">
+            <button class="filter-btn" data-dropdown="eventType">
                 EVENT TYPE ▼
                 <div id="eventTypeDropdown" class="dropdown-content">
                     <?php while($currentrow = $results->fetch_assoc()): ?>
-                        <a href="#" onclick="setFilter('event_type', '<?php echo $currentrow['event_type'] ?>')"><?php echo $currentrow['event_type'] ?></a>
+                        <a href="#" data-filter-type="event_type" data-filter-value="<?php echo $currentrow['event_type'] ?>"><?php echo $currentrow['event_type'] ?></a>
                     <?php endwhile; ?>
-                    <a href="#" onclick="setFilter('event_type', 'all')">Today</a>
+                    <a href="#" data-filter-type="event_type" data-filter-value="all">Today</a>
                 </div>
             </button>
-            <button class="filter-btn" onclick="toggleDropdown('date')">
+            <button class="filter-btn" data-dropdown="date">
                 DATE ▼
                 <div id="dateDropdown" class="dropdown-content">
-                    <a href="#" onclick="setFilter('event_date', 'today')">Today</a>
-                    <a href="#" onclick="setFilter('event_date', 'this_week')">This Week</a>
-                    <a href="#" onclick="setFilter('event_date', 'this_month')">This Month</a>
-                    <a href="#" onclick="setFilter('event_date', 'all')">All</a>
+                    <a href="#" data-filter-type="event_date" data-filter-value="today">Today</a>
+                    <a href="#" data-filter-type="event_date" data-filter-value="this_week">This Week</a>
+                    <a href="#" data-filter-type="event_date" data-filter-value="this_month">This Month</a>
+                    <a href="#" data-filter-type="event_date" data-filter-value="all">All</a>
                 </div>
             </button>
-            <button class="filter-btn" onclick="toggleDropdown('location')">
+            <button class="filter-btn" data-dropdown="location">
                 LOCATION ▼
                 <div id="locationDropdown" class="dropdown-content">
-                    <a href="#" onclick="setFilter('oncampus', 'oncampus')">On Campus</a>
-                    <a href="#" onclick="setFilter('oncampus', 'downtown')">Downtown</a>
-                    <a href="#" onclick="setFilter('oncampus', 'all')">All</a>
+                    <a href="#" data-filter-type="oncampus" data-filter-value="oncampus">On Campus</a>
+                    <a href="#" data-filter-type="oncampus" data-filter-value="downtown">Downtown</a>
+                    <a href="#" data-filter-type="oncampus" data-filter-value="all">All</a>
                 </div>
             </button>
         </div>
@@ -391,6 +455,7 @@ if ($mysql->connect_errno) {
 <script>
 
     let currentOpenDropdown = null;
+
     function toggleDropdown(dropdownId) {
         const dropdown = document.getElementById(dropdownId + 'Dropdown');
 
@@ -399,11 +464,18 @@ if ($mysql->connect_errno) {
         }
         dropdown.classList.toggle('show');
         currentOpenDropdown = dropdown.classList.contains('show') ? dropdown : null;
-        event.stopPropagation();
     }
 
+    // Event delegation for dropdown toggles
     document.addEventListener('click', function(event) {
-        if (!event.target.matches('.filter-btn')) {
+        // Handle filter button clicks
+        if (event.target.matches('.filter-btn')) {
+            const dropdownId = event.target.getAttribute('data-dropdown');
+            toggleDropdown(dropdownId);
+            event.stopPropagation();
+        }
+        // Close dropdown when clicking outside
+        else if (!event.target.closest('.dropdown-content')) {
             if (currentOpenDropdown) {
                 currentOpenDropdown.classList.remove('show');
                 currentOpenDropdown = null;
@@ -411,20 +483,30 @@ if ($mysql->connect_errno) {
         }
     });
 
-    document.querySelectorAll('.dropdown-content a').forEach(item => {
-        item.addEventListener('click', function(event) {
+    // Event delegation for filter links
+    document.addEventListener('click', function(event) {
+        const filterLink = event.target.closest('[data-filter-type]');
+        if (filterLink) {
             event.preventDefault();
+            event.stopPropagation();
 
-            const parentButton = this.closest('.filter-btn');
-            const buttonText = parentButton.childNodes[0];
-            const newText = this.textContent + ' ▼';
-            buttonText.textContent = newText;
+            const filterType = filterLink.getAttribute('data-filter-type');
+            const filterValue = filterLink.getAttribute('data-filter-value');
 
+            // Update button text
+            const parentButton = filterLink.closest('.filter-btn');
+            const buttonText = filterLink.textContent + ' ▼';
+            parentButton.childNodes[0].textContent = buttonText;
+
+            // Close dropdown
             if (currentOpenDropdown) {
                 currentOpenDropdown.classList.remove('show');
                 currentOpenDropdown = null;
             }
-        });
+
+            // Apply filter
+            setFilter(filterType, filterValue);
+        }
     });
 </script>
 <!---------------------------------------------DROPDOWN SCRIPT----------------------------------------------------->
