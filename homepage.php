@@ -486,7 +486,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
         while($row = $result->fetch_assoc()) {
             echo "<div class='gallery1'>
             <div class='profile-container'>
-                <img src='images/profile_pics/" . $row['profile_picture'] .  "' class='profile-image'>
+                <img src='https://ddelgatt.webdev.iyaserver.com/acad276/safecircle/images/profile_pics/" . $row['profile_picture'] .  "' class='profile-image'>
                 <div class='online-indicator'></div>
             </div>
             <div class='desc'>" . $row['user_2_name'] . "</div>
