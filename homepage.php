@@ -88,12 +88,25 @@ if ($mysql->connect_errno) {
         exit();
     }
     ?>
+    <script>
+        // Wait until the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // Attach the click event listener to all elements with the class 'gallery-card'
+            document.querySelectorAll('.gallery-card').forEach(function(card) {
+                card.addEventListener('click', function(e) {
+                    // Redirect to the desired page with the event_id
+                    const eventId = card.id; // Get the event ID from the element's ID
+                    window.location.href = `eventdetails (1).php?event_id=${eventId}`;
+                });
+            });
+        });
+    </script>
     <div class="gallery-container clearfix">
         <div class="gallery-grid">
             <?php while($currentrow = $preferences->fetch_assoc()): ?>
                 <?php if($counter >= $start && $counter <= $end): ?>
-                    <div class="gallery-card">
-                        <img src="images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
+                    <div class="gallery-card" id="<?php echo $currentrow['event_id'] ?>">
+                        <img src="https://amypan.webdev.iyaserver.com/safecircle/images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
                         <div class="gallery-details">
                             <h3 class="gallery-caption"><?php echo htmlspecialchars($currentrow['event_name']); ?></h3>
                             <p class="gallery-description">
@@ -252,12 +265,18 @@ if ($mysql->connect_errno) {
 
     ?>
 
+    <script>
+        document.querySelector('.gallery-card').addEventListener('click', function(e) {
+            //when clicked the user is taken to eventdetails (1).php?event_id=$currentrow['event_id']
+        }
+    </script>
+
     <div class="gallery-container clearfix">
         <div class="gallery-grid">
             <?php while($currentrow = $results1->fetch_assoc()): ?>
                 <?php if($counter1 >= $start1 && $counter1 <= $end1): ?>
                     <div class="gallery-card">
-                        <img src="images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
+                        <img src="https://amypan.webdev.iyaserver.com/safecircle/images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>" alt="Event Banner" class="gallery-image">
                         <div class="gallery-details">
                             <h3 class="gallery-caption"><?php echo htmlspecialchars($currentrow['event_name']); ?></h3>
                             <p class="gallery-description">

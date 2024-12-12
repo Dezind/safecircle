@@ -34,7 +34,6 @@ $row = $result->fetch_assoc();
 $existing_banner_img = $row['banner_img'];
 $stmt->close();
 
-echo "Existing Banner Image: $existing_banner_img<br>";
 
 $upload_dir = '../images/banners/';
 

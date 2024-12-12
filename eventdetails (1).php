@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: emailcheckpage.php");
+    exit();
+}
+
 $host = "webdev.iyaserver.com";
 $userid = "<youruserid>";
 $userpw = "<yourpw>";
@@ -15,14 +22,6 @@ $mysql = new mysqli(
 
 if ($mysql->connect_errno) {
     echo "db connection error : " . $mysql->connect_error;
-    exit();
-}
-
-$sql = "SELECT * FROM event_types";
-$results = $mysql->query($sql);
-
-if(!$results) {
-    echo "SQL error: ". $mysql->error . " running query <hr>" . $sql . "<hr>";
     exit();
 }
 
@@ -212,8 +211,6 @@ if(!$results) {
 
         .right-column {
             flex: 1;
-            padding-top: 160px;
-
         }
 
         .image-container {
@@ -467,131 +464,124 @@ if(!$results) {
         }
     </style>
 </head>
+<?php include 'header2.php' ?>
 <body>
-<header>
-    <nav class="navbar2"></nav>
-</header>
+
+
+<?php
+
+$sql = "SELECT * FROM eventview WHERE event_id = " . $_REQUEST['event_id'];
+
+$results = $mysql->query($sql);
+
+if(!$results) {
+    echo "SQL error: ". htmlspecialchars($mysql->error) . " running query <hr>" . htmlspecialchars($sql) . "<hr>";
+    exit();
+}
+
+while($row = $results->fetch_assoc()) {
+    $event_name     = $row['event_name'];
+    $event_date     = $row['event_date'];
+    $start_time     = $row['start_time'];
+    $end_time       = $row['end_time'];
+    $description    = $row['description'];
+    $location       = $row['location'];
+    $address        = $row['address'];
+    $address        = $row['address'];
+    $event_type  = $row['event_type'];
+    $banner_img = $row['banner_img'];
+}
+?>
+<div class="top-section">
+        <div class="image-container">
+            <img src="https://amypan.webdev.iyaserver.com/safecircle/images/banners/<?php echo htmlspecialchars($banner_img); ?>" alt="Event Header Image" class="top-image">
+        </div>
+</div>
 
 <div class="top-section">
     <div class="left-column">
-        <div class="image-container">
-            <img src="your-image.jpg" alt="Event Header Image" class="top-image">
-        </div>
         <div class="event-details">
-            <h1>The Velvet Underground at Ritz Theater</h1>
-            <p>On Sunday, January 5, 2025, The Velvet Underground brings their explosive energy to the Ritz Theater in Los Angeles, as part of their iconic Live Through This Tour.</p>
-            <p>Sunday, January 5</p>
-            <p>7:00pm - 11:00pm</p>
-            <div class="location">
-                <p>2820 Industrial Drive, Los Angeles CA <a href="#" style="color: white; text-decoration: none;">📍</a></p>
-            </div>
+            <h1><?php echo $event_name ?></h1>
+            <p><?php echo $description ?></p>
         </div>
     </div>
     <div class="right-column">
         <div class="event-info">
-            <h2>Hosted by</h2>
-            <p>SafeCircle</p>
-            <h2>Website</h2>
-            <p>www.thevelvetunderground.com</p>
+            <h2><?php echo date('D, M j', strtotime($event_date)); ?></h2>
+            <p><?php echo date('g:ia', strtotime($start_time)); ?></p>
+            <h2><?php echo $location ?></h2>
+            <p><?php echo $address ?></p>
         </div>
     </div>
 </div>
 
+<?php include 'rsvp_graphic.php' ?>
+
+<?php
+
+$eventId = $_REQUEST['event_id']; // Replace with dynamic event_id if needed
+$currentUser = $_SESSION['user_id']; // Replace with the logged-in user's name
+
+$sqlFriends = "SELECT DISTINCT users.username AS friend_name, users.profile_picture 
+                FROM friends_list JOIN rsvp_view ON (friends_list.user_1_name = rsvp_view.user_id OR friends_list.user_2_name = rsvp_view.user_id) 
+                    JOIN users ON users.user_id = rsvp_view.user_id WHERE rsvp_view.event_id = ". $eventId ." 
+                 AND (friends_list.user_1_name = '". $currentUser ."')
+                 AND friends_list.accepted_date IS NOT NULL";
+
+$resultFriends = $mysql->query($sqlFriends);
+
+// Fetch other attendees (non-friends)
+$sqlAttendees = "SELECT users.username AS attendee_name, users.profile_picture 
+                 FROM rsvp_view
+                 JOIN users ON users.user_id = rsvp_view.user_id
+                 WHERE rsvp_view.event_id = ". $eventId ."
+                 ";
+$resultAttendees = $mysql->query($sqlAttendees);
+
+$mysql->close();
+?>
+
 <div class="event-container">
-    <div class="card">
-        <div class="space-y-8">
-            <div class="flex items-center justify-between">
-                <h3 class="text-lg font-medium text-stats tracking-tight">Tech Conference 2024</h3>
-                <div class="trending-badge">
-                    <svg class="icon w-4 h-4" viewBox="0 0 24 24">
-                        <line x1="7" y1="17" x2="17" y2="7"></line>
-                        <polyline points="7 7 17 7 17 17"></polyline>
-                    </svg>
-                    Trending
-                </div>
-            </div>
 
-            <div class="flex items-center justify-between px-4">
-                <div class="flex items-center">
-                    <svg class="icon w-5 h-5 text-stats opacity-80" viewBox="0 0 24 24">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <div class="flex items-baseline space-x-2">
-                        <span class="text-lg text-stats number" style="margin-right: 7px">245</span>
-                        <span class="text-sm subtle-text">signups</span>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <svg class="icon w-5 h-5 text-stats opacity-80" viewBox="0 0 24 24">
-                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
-                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
-                        <path d="M4 22h16"></path>
-                        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
-                        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
-                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
-                    </svg>
-                    <div class="flex items-baseline space-x-2">
-                        <span class="text-2xl font-semibold text-stats number" style="margin-right: 7px; font-weight: bold; font-size: 23px">55</span>
-                        <span class="text-sm subtle-text" style="margin-top: 3px">spots left</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-3">
-                <div class="progress-container">
-                    <div class="progress-glow" style="width: 81.67%"></div>
-                    <div class="progress-bar">
-                        <div class="progress-bar-fill" style="width: 81.67%"></div>
-                    </div>
-                </div>
-                <div class="flex justify-between text-sm subtle-text px-1">
-                    <span>81.67% filled</span>
-                    <span>Capacity: 300</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Who's Going Section -->
     <div class="who-is-going">
         <h2>Who's Going</h2>
+
+        <!-- Friends Section -->
         <div class="friends-section">
             <h3>Friends</h3>
             <div class="friends">
-                <div class="profile-image" style="background-image: url('velvetunderground.png')"></div>
-                <div class="profile-image" style="background-image: url('velvetunderground.png')"></div>
+                <?php
+                if ($resultFriends->num_rows > 0) {
+                    while ($friend = $resultFriends->fetch_assoc()) {
+                        echo "<div class='profile-image' style='background-image: url(\"" . $friend['profile_picture'] . "\")'></div>";
+                    }
+                } else {
+                    echo "<p>No friends attending yet.</p>";
+                }
+                ?>
                 <button>Invite Friends</button>
             </div>
         </div>
+
+        <!-- Other Attendees Section -->
         <div class="other-attendees-section">
             <h3>Other Attendees</h3>
             <div class="other-attendees">
-                <div class="profile-image" style="background-image: url('velvetunderground.png')"></div>
-                <div class="profile-image" style="background-image: url('velvetunderground.png')"></div>
-                <div class="profile-image" style="background-image: url('velvetunderground.png')"></div>
-                <div class="profile-image" style="background-image: url('velvetunderground.png')"></div>
-                <div class="profile-image" style="background-image: url('velvetunderground.png')"></div>
+                <?php
+                if ($resultAttendees->num_rows > 0) {
+                    while ($attendee = $resultAttendees->fetch_assoc()) {
+                        echo "<div class='profile-image' style='background-image: url(https://ddelgatt.webdev.iyaserver.com/acad276/safecircle/images/profile_pics/" . $attendee['profile_picture'] . ")'></div>";
+                    }
+                } else {
+                    echo "<p>No other attendees yet.</p>";
+                }
+                ?>
             </div>
         </div>
     </div>
 
-    <div class="activity">
-        <h2>Activity</h2>
-        <div class="activity-item">
-            <div class="profile-image" style="background-image: url('velvetunderground.png')"></div>
-            <p>Amy RSVPed <strong>Going</strong> two hours ago</p>
-        </div>
-        <div class="activity-item">
-            <div class="profile-image" style="background-image: url('velvetunderground.png')"></div>
-            <p>Amy RSVPed <strong>Going</strong> two hours ago</p>
-        </div>
-        <div class="activity-item">
-            <div class="profile-image" style="background-image: url('velvetunderground.png')"></div>
-            <p>Amy RSVPed <strong>Going</strong> two hours ago</p>
-        </div>
-    </div>
 </div>
+
 </body>
 </html>

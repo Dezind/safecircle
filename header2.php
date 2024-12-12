@@ -330,7 +330,7 @@
                 <?php
                 // Check if the user is an admin
                 if (isset($_SESSION['admin']) && $_SESSION['admin'] == 1) {
-                    echo '<a href="admin/adminpage.php">Admin Page</a>';
+                    echo '<a href="https://amypan.webdev.iyaserver.com/safecircle/admin/adminpage.php">Admin Page</a>';
                 }
                 ?>
                 <a href="user_preference_quiz.php">Preference Quiz</a>

@@ -1,6 +1,6 @@
 
     <div class="event-tile">
-        <div class="event-image" style="background-image: url('images/banners/<?php echo $currentrow['banner_img']?>');"></div>
+        <div class="event-image" style="background-image: url('https://amypan.webdev.iyaserver.com/safecircle/images/banners/<?php echo htmlspecialchars($currentrow['banner_img']); ?>');"></div>
         <div class="event-content">
             <div class="event-title"><?php echo $currentrow['event_name']?></div>
             <div class="event-details">
