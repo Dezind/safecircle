@@ -1030,3 +1030,297 @@ h2 {
     object-fit: cover;
     background: #eee;
 }
+
+/*-------------------------event details page---------------------------*/
+
+ body {
+     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+     margin: 0;
+     padding: 0;
+     background-color: #000000;
+     color: white;
+     padding-top: 80px;
+ }
+
+.navbar2 {
+    background-color: black;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.top-section {
+    display: flex;
+    gap: 40px;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+}
+
+.left-column {
+    flex: 2;
+}
+
+.right-column {
+    flex: 1;
+    padding-top: 160px;
+
+}
+
+.image-container {
+    margin-bottom: 20px;
+}
+
+.top-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.event-container {
+    padding: 0 20px 40px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.event-details h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.event-details p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #a3a3a3;
+}
+
+.location {
+    font-size: 0.9rem;
+    color: #9ca3af;
+    margin-bottom: 40px;
+}
+
+.event-info {
+    margin-bottom: 0;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right:20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-info h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.event-info p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #a3a3a3;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    width: 100%;
+    color: white;
+    margin-bottom: 40px;
+    margin-top: 50px;
+}
+
+.progress-container {
+    position: relative;
+    margin: 32px 0;
+    padding: 4px;
+}
+
+.progress-bar {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    height: 8px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.progress-bar-fill {
+    background: white;
+    height: 100%;
+    transition: width 0.3s ease;
+    position: relative;
+    border-radius: 100px;
+    box-shadow:
+            0 0 20px rgba(255, 255, 255, 1),
+            0 0 40px rgba(255, 255, 255, 0.8),
+            0 0 60px rgba(255, 255, 255, 0.6),
+            0 0 80px rgba(255, 255, 255, 0.4);
+}
+
+.progress-glow {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 8px;
+    background: white;
+    filter: blur(16px);
+    opacity: 0.6;
+    transform: translateY(-50%);
+    transition: width 0.3s ease;
+    border-radius: 100px;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+}
+
+.text-stats {
+    color: white;
+}
+
+.subtle-text {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.trending-badge {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 12px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+}
+
+.number {
+    letter-spacing: -0.5px;
+}
+
+.space-y-8 {
+    padding: 24px;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.space-x-2 {
+    margin-left: 1rem;
+}
+
+.space-x-3 {
+    margin-left: 0.75rem;
+}
+
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.px-1 {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
+
+.who-is-going h2, .photo-album h2, .activity h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.friends-section, .other-attendees-section {
+    margin-bottom: 20px;
+
+    padding: 0px 20px 20px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.friends-section h3, .other-attendees-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 5px;
+}
+
+.friends, .other-attendees {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.friends button {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.friends button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    transform: scale(1.02);
+}
+
+.profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.activity-item .profile-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+}
+
+.activity-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: white;
+}
+
