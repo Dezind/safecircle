@@ -78,11 +78,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->close();
     }
 
-    echo "Preferences updated successfully!";
-    echo "<a href='homepage.php'>Back to home page</a>";
+
 }
 
 ?>
+
 
 
 <!DOCTYPE html>
@@ -112,14 +112,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             height: 100vh;
             margin: 0;
             text-align: center;
+
         }
 
         .quiz-container {
             background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 40px 30px;
+            padding: 30px 30px;
             border-radius: 10px;
-            width: 360px;
+            width: 500px;
             box-sizing: border-box;
             backdrop-filter: blur(10px);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.1),
@@ -129,11 +130,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .quiz-container form {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+
+            gap: 50px;
         }
 
         .quiz-container h2 {
-            font-size: 1rem;
+            font-size: 2rem;
             margin: 0 0 10px 0;
             text-align: left;
             color: white;
@@ -147,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .custom-select-input {
             width: 100%;
             padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
             border-radius: 5px;
             background-color: transparent;
             color: white;
@@ -178,6 +180,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             cursor: pointer;
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
             text-align: left;
+
+
         }
 
         .custom-select-dropdown label:hover {
@@ -186,6 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .custom-select-dropdown label input {
             margin-right: 10px;
+
         }
 
         button {
@@ -233,6 +238,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .button-container button {
             flex: 1;
         }
+
+        .fade-out {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+
     </style>
 </head>
 <body>
@@ -258,6 +270,65 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </form>
 </div>
+
+<?php if ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.quiz-container');
+
+            // Fade out and scale down the entire container
+            container.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+            container.style.opacity = '0';
+            container.style.transform = 'scale(0.95)';
+
+            // Create a new div for the message
+            setTimeout(() => {
+                // Remove the old container
+                container.remove();
+
+                // Create centered message container
+                const messageContainer = document.createElement('div');
+                messageContainer.style.position = 'fixed';
+                messageContainer.style.top = '50%';
+                messageContainer.style.left = '50%';
+                messageContainer.style.transform = 'translate(-50%, -50%)';
+                messageContainer.style.textAlign = 'center';
+                messageContainer.style.width = '100%';
+                messageContainer.style.padding = '20px';
+                messageContainer.style.opacity = '0';
+                messageContainer.innerHTML = `
+                <div style='text-align: center; padding: 30px;'>
+                    <p style='margin-bottom: 40px; font-size: 2rem;'>Thank you! Your Personalized Page Is Now Ready.</p>
+                    <a href='homepage.php' style='display: inline-block; background-color: transparent; color: white; border: 1px solid white; border-radius: 50px; padding: 12px 20px; text-decoration: none; font-weight: bold; font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif; transition: all 0.3s ease; cursor: pointer;'
+                    onmouseover='
+                    this.style.borderColor = "white";
+                    this.style.boxShadow = "0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.2)";
+                    this.style.transform = "scale(1.02)";
+                    this.style.background = "rgba(255, 255, 255, 0.1)";
+                    this.style.animation = "glow 1.5s ease-in-out infinite";
+        '
+                    onmouseout='
+                    this.style.borderColor = "white";
+                    this.style.boxShadow = "none";
+                    this.style.transform = "scale(1)";
+                    this.style.background = "transparent";
+                    this.style.animation = "none";
+                    '>Explore Now</a>
+                    </div>
+            `;
+
+                // Add message to the body
+                document.body.appendChild(messageContainer);
+
+                // Fade in the message
+                setTimeout(() => {
+                    messageContainer.style.transition = 'opacity 0.5s ease-in';
+                    messageContainer.style.opacity = '1';
+                }, 50);
+            }, 500);
+        });
+    </script>
+<?php endif; ?>
 
 </body>
 </html>
