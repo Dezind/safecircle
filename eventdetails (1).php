@@ -522,11 +522,9 @@ while($row = $results->fetch_assoc()) {
 $eventId = $_REQUEST['event_id']; // Replace with dynamic event_id if needed
 $currentUser = $_SESSION['user_id']; // Replace with the logged-in user's name
 
-$sqlFriends = "SELECT DISTINCT users.username AS friend_name, users.profile_picture 
-                FROM friends_list JOIN rsvp_view ON (friends_list.user_1_name = rsvp_view.user_id OR friends_list.user_2_name = rsvp_view.user_id) 
-                    JOIN users ON users.user_id = rsvp_view.user_id WHERE rsvp_view.event_id = ". $eventId ." 
-                 AND (friends_list.user_1_name = '". $currentUser ."')
-                 AND friends_list.accepted_date IS NOT NULL";
+$sqlFriends = "SELECT DISTINCT users.username AS friend_name, users.profile_picture FROM friends JOIN rsvp_view ON (friends.user_id_1 = rsvp_view.user_id OR friends.user_id_2 = rsvp_view.user_id) 
+    JOIN users ON users.user_id = rsvp_view.user_id WHERE rsvp_view.event_id = ". $eventId ." 
+                 AND (friends.user_id_1 = '". $currentUser ."')";
 
 $resultFriends = $mysql->query($sqlFriends);
 
@@ -554,7 +552,7 @@ $mysql->close();
                 <?php
                 if ($resultFriends->num_rows > 0) {
                     while ($friend = $resultFriends->fetch_assoc()) {
-                        echo "<div class='profile-image' style='background-image: url(\"" . $friend['profile_picture'] . "\")'></div>";
+                        echo "<div class='profile-image' style='background-image: url(https://ddelgatt.webdev.iyaserver.com/acad276/safecircle/images/profile_pics/" . $friend['profile_picture'] . ")'></div>";
                     }
                 } else {
                     echo "<p>No friends attending yet.</p>";
